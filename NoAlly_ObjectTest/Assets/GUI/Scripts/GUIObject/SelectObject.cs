@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GUISelectObject : MonoBehaviour
+public class SelectObject : MonoBehaviour,ISelectObject
 {
     [SerializeField, Header("オブジェクトのImage")]
     Image[] _objectImage = null;
@@ -18,10 +18,8 @@ public class GUISelectObject : MonoBehaviour
     [Tooltip("ボタンの状態")]
     protected ButtonState _state = ButtonState.NONE;
 
-    /// <summary>
-    /// ゲーム実行時初期化
-    /// </summary>
-    public virtual void Initializer()
+   
+    public virtual void Initialize()
     {
         ActiveUIObject(false);
     }
@@ -91,6 +89,16 @@ public class GUISelectObject : MonoBehaviour
             _objectAnimator.enabled = isActive;
         }
         Array.ForEach(_objectImage, x => x.enabled = isActive);
+    }
+
+    public virtual void Extended()
+    {
+        ActiveUIObject(true);
+    }
+
+    public virtual void Closed()
+    {
+        ActiveUIObject(false);
     }
 }
 

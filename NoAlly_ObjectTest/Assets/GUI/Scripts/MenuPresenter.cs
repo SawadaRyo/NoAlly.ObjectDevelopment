@@ -31,20 +31,24 @@ public class MenuPresenter : MonoBehaviour
             {
                 _menuManager.IsMenuOpen(isMenuOpen);
             });
-        _menuHander.InputCross
-            .Subscribe(inputCross =>
-            {
-                _menuManager.TargetButton = _menuManager.CurrentMenuPanel.Select(inputCross.Item1, inputCross.Item2);
-            });
-        _menuHander.IsDiside
-            .Subscribe(isDiside =>
-            {
-                _menuManager.OnDisaide();
-            });
-        _menuHander.IsCansel
-            .Subscribe(isCansel =>
-            {
-                _menuManager.OnCansel();
-            });
+        if (_menuHander.IsOpen.Value)
+        {
+
+            _menuHander.InputCross
+                .Subscribe(inputCross =>
+                {
+                    _menuManager.SelectTaretButton(inputCross.Item1, inputCross.Item2);
+                });
+            _menuHander.IsDiside
+                .Subscribe(isDiside =>
+                {
+                    _menuManager.OnDisaide();
+                });
+            _menuHander.IsCansel
+                .Subscribe(isCansel =>
+                {
+                    _menuManager.OnCansel();
+                });
+        }
     }
 }
