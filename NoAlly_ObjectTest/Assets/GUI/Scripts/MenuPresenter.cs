@@ -26,29 +26,25 @@ public class MenuPresenter : MonoBehaviour
 
     void ObjectSelect()
     {
-        _menuHander.IsOpen
+        _menuHander.IsOpen.Skip(1)
             .Subscribe(isMenuOpen =>
             {
                 _menuManager.IsMenuOpen(isMenuOpen);
             });
-        if (_menuHander.IsOpen.Value)
-        {
-
-            _menuHander.InputCross
-                .Subscribe(inputCross =>
-                {
-                    _menuManager.SelectTaretButton(inputCross.Item1, inputCross.Item2);
-                });
-            _menuHander.IsDiside
-                .Subscribe(isDiside =>
-                {
-                    _menuManager.OnDisaide();
-                });
-            _menuHander.IsCansel
-                .Subscribe(isCansel =>
-                {
-                    _menuManager.OnCansel();
-                });
-        }
+        _menuHander.InputCross.Skip(1)
+            .Subscribe(inputCross =>
+            {
+                _menuManager.SelectTaretButton(inputCross.Item1, inputCross.Item2);
+            });
+        _menuHander.IsDiside.Skip(1)
+            .Subscribe(isDiside =>
+            {
+                _menuManager.OnDisaide();
+            });
+        _menuHander.IsCansel.Skip(1)
+            .Subscribe(isCansel =>
+            {
+                _menuManager.OnCansel();
+            });
     }
 }

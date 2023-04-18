@@ -3,17 +3,17 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuManagerBase : MonoBehaviour
+public class MenuManagerBase : UIObjectBase
 {
-    [SerializeField, Header("MenuPanelの配列。(アタッチするときは階層順に)")]
-    SelectObjecArray[] _selectObjects = null;
+    [SerializeField, Header("MenuPanelの初期選択画面")]
+    SelectObjecArray _firstSelectObjects = null;
 
-    [Tooltip("現在のメニュー深度")]
-    int _currentDepthNum = 0;
     [Tooltip("選択中のボタン")]
     SelectObject _targetButton = default;
     [Tooltip("現在展開中のメニュー画面")]
     SelectObjecArray _currentMenuPanel = null;
+    [Tooltip("ひとつ前のメニュー画面")]
+    SelectObjecArray _beforeMenuPanel = null;
 
 
 
@@ -22,9 +22,10 @@ public class MenuManagerBase : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        Array.ForEach(_selectObjects, x => x.Initialize());
-        _targetButton = _selectObjects[0].Select(0, 0);
-        _currentMenuPanel = _selectObjects[0];
+        ActiveUIObject(false);
+        _firstSelectObjects.Initialize(null);
+        _targetButton = _firstSelectObjects.Select(0, 0);
+        _currentMenuPanel = _firstSelectObjects;
     }
 
     /// <summary>
@@ -35,15 +36,16 @@ public class MenuManagerBase : MonoBehaviour
     {
         if (isMenuOpen)
         {
-            _selectObjects[0].Extended();
-            _targetButton = _selectObjects[0].Select(0, 0);
+            _firstSelectObjects.Extended();
+            _targetButton = _firstSelectObjects.Select();
             _targetButton.Selected(true);
         }
         else
         {
             _targetButton.Selected(false);
-            Array.ForEach(_selectObjects, x => x.Closed());
+            _firstSelectObjects.Closed();
         }
+        ActiveUIObject(isMenuOpen);
     }
 
     /// <summary>
@@ -51,11 +53,10 @@ public class MenuManagerBase : MonoBehaviour
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    public void SelectTaretButton(int x, int y) 
+    public void SelectTaretButton(int x, int y)
     {
         _targetButton.Selected(false);
         _targetButton = _currentMenuPanel.Select(x, y);
-        _targetButton.Selected(true);
     }
 
     /// <summary>
@@ -63,19 +64,18 @@ public class MenuManagerBase : MonoBehaviour
     /// </summary>
     public void OnDisaide()
     {
-        if (_targetButton is SelectObjecArray)
+        if (_targetButton is SelectObjecArray selectObjecArray)
         {
-            _currentMenuPanel.Disaide(false);
-            if (_currentDepthNum++! >= _selectObjects.Length)
-            {
-                _currentDepthNum++;
-                _currentMenuPanel = _selectObjects[_currentDepthNum];
-            }
-            _currentMenuPanel.Disaide(true);
+            _currentMenuPanel.Selected(false); //直前まで展開していた画面を閉じる
+            _currentMenuPanel.ActiveUIObject(false);
+            _beforeMenuPanel = selectObjecArray.Perent; //ひとつ前の画面を指定
+            _currentMenuPanel = selectObjecArray; //現在の画面を指定
+            _currentMenuPanel.Extended(); 
+            _targetButton = _currentMenuPanel.Select();//現在の画面を展開
         }
         else if (_targetButton is SelectObject)
         {
-            _targetButton.Disaide();
+            _targetButton.DoEvent();
         }
     }
 
@@ -84,12 +84,15 @@ public class MenuManagerBase : MonoBehaviour
     /// </summary>
     public void OnCansel()
     {
-        _currentMenuPanel.Disaide(false);
-        if (_currentDepthNum--! <= -1)
+        _currentMenuPanel.Closed();
+        _currentMenuPanel = _beforeMenuPanel;
+
+        if (_currentMenuPanel.Perent
+         && _currentMenuPanel.Perent is SelectObjecArray selectObjecPerent)
         {
-            _currentDepthNum--;
-            _currentMenuPanel = _selectObjects[_currentDepthNum];
+            _beforeMenuPanel = selectObjecPerent;
         }
-        _currentMenuPanel.Disaide(true);
+        _currentMenuPanel.Extended();
+        _targetButton = _currentMenuPanel.Select();
     }
 }

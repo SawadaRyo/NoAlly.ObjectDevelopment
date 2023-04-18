@@ -41,12 +41,11 @@ public class MenuHanderBase : MonoBehaviour, IMenuHander
             // メニューのボタン操作
             _reactiveIsDiside.Value = Input.GetButtonDown("Decision"); //決定
             _reactiveIsCansel.Value = Input.GetButtonDown("CanselButton"); //戻る
-            int h = (int)Input.GetAxisRaw("CrossKeyH"); //横入力
-            int v = (int)Input.GetAxisRaw("CrossKeyV"); //縦入力
-            if (_canMove.IsCountUp() && (h != 0 || v != 0))
+            (int, int) inputCross = ((int)Input.GetAxisRaw("CrossKeyH"), (int)Input.GetAxisRaw("CrossKeyV"));//(横入力,縦入力)
+            if (_canMove.IsCountUp() && (inputCross.Item1 != 0 || inputCross.Item2 != 0))
             {
                 _canMove.ResetTimer();
-                _inputCross.Value = (h, v);
+                _inputCross.SetValueAndForceNotify(inputCross);
             }
         }
     }

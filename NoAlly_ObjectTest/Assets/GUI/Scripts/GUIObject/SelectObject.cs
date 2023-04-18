@@ -4,23 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectObject : MonoBehaviour,ISelectObject
+public class SelectObject : UIObjectBase,ISelectObject
 {
-    [SerializeField, Header("オブジェクトのImage")]
-    Image[] _objectImage = null;
-    [SerializeField, Header("オブジェクトのAnimator")]
-    protected Animator _objectAnimator = null;
     [SerializeField, Header("決定時のイベント")]
     protected Button _event;
     [SerializeField, Header("ボタンの配色")]
     protected Color[] _buttonColors = { Color.white, Color.yellow };
 
+    [Tooltip("")] SelectObjecArray _perent = null;
     [Tooltip("ボタンの状態")]
     protected ButtonState _state = ButtonState.NONE;
 
-   
-    public virtual void Initialize()
+    public SelectObjecArray Perent => _perent;
+
+    public virtual void Initialize(SelectObjecArray perent)
     {
+        _perent = perent;
         ActiveUIObject(false);
     }
     /// <summary>
@@ -60,42 +59,14 @@ public class SelectObject : MonoBehaviour,ISelectObject
         _objectAnimator.SetBool("IsSelect", isSelect);
     }
 
-    /// <summary>
-    /// 決定時実行関数
-    /// </summary>
-    public virtual void Disaide()
+    public void DoEvent()
     {
         _event.onClick.Invoke();
-        //_objectAnimator.SetBool("IsDisaide", isDisaide);
     }
-
-    /// <summary>
-    /// 決定時実行関数
-    /// </summary>
-    /// <param name="isDisaide">決定判定</param>
-    public virtual void Disaide(bool isDisaide)
-    {
-        _event.onClick.Invoke();
-        //_objectAnimator.SetBool("IsDisaide", isDisaide);
-    }
-    /// <summary>
-    /// オブジェクトの表示
-    /// </summary>
-    /// <param name="isActive"></param>
-    public void ActiveUIObject(bool isActive)
-    {
-        if (_objectAnimator != null)
-        {
-            _objectAnimator.enabled = isActive;
-        }
-        Array.ForEach(_objectImage, x => x.enabled = isActive);
-    }
-
     public virtual void Extended()
     {
         ActiveUIObject(true);
     }
-
     public virtual void Closed()
     {
         ActiveUIObject(false);
