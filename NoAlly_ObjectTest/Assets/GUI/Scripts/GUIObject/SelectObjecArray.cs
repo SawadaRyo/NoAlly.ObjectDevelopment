@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using DimensionalArray;
 using System;
 
@@ -15,7 +13,7 @@ public class SelectObjecArray : SelectObject
     (int, int) _currentCross = (0, 0);
 
     public int DepthOfMenu => _depthOfMenu;
-    public SelectObject Childlen(int x, int y) => _childlenArray[y].ChildArrays[x];
+    public GenericArray<SelectObject>[] Childlen => _childlenArray;
 
     public override void Initialize(SelectObjecArray perent)
     {
@@ -30,10 +28,9 @@ public class SelectObjecArray : SelectObject
     }
     public SelectObject Select()
     {
-        _childlenArray[_currentCross.Item2].ChildArrays[_currentCross.Item1].Selected(true);
+        _childlenArray[_currentCross.Item2].ChildArrays[_currentCross.Item1].IsSelect(true);
         return _childlenArray[_currentCross.Item2].ChildArrays[_currentCross.Item1];
     }
-
     public SelectObject Select(int x, int y)
     {
         if (x < 0)
@@ -69,32 +66,16 @@ public class SelectObjecArray : SelectObject
                 _currentCross.Item2 = _childlenArray.Length - 1;
             }
         }
-        _childlenArray[_currentCross.Item2].ChildArrays[_currentCross.Item1].Selected(true);
+        _childlenArray[_currentCross.Item2].ChildArrays[_currentCross.Item1].IsSelect(true);
         return _childlenArray[_currentCross.Item2].ChildArrays[_currentCross.Item1];
-    }
-
-    public override void Extended()
-    {
-        base.Extended();
-        Array.ForEach(_childlenArray, childlen =>
-        {
-            Array.ForEach(childlen.ChildArrays, x => x.ActiveUIObject(true));
-        });
     }
     public override void Closed()
     {
-        Selected(false);
         base.Closed();
         Array.ForEach(_childlenArray, childlen =>
         {
-            if (_depthOfMenu != 0)
-            {
-                Array.ForEach(childlen.ChildArrays, x => x.ActiveUIObject(false));
-            }
-            else
-            {
-                Array.ForEach(childlen.ChildArrays, x => x.Closed());
-            }
+            Array.ForEach(childlen.ChildArrays, x => x.Closed());
         });
     }
+
 }

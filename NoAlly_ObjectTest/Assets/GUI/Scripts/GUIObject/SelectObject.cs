@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectObject : UIObjectBase,ISelectObject
+public class SelectObject : UIObjectBase, ISelectObject
 {
     [SerializeField, Header("決定時のイベント")]
-    protected Button _event;
+    Button _event;
     [SerializeField, Header("ボタンの配色")]
-    protected Color[] _buttonColors = { Color.white, Color.yellow };
+    Color[] _buttonColors = { Color.white, Color.yellow };
 
     [Tooltip("")] SelectObjecArray _perent = null;
     [Tooltip("ボタンの状態")]
-    protected ButtonState _state = ButtonState.NONE;
+    ButtonState _state = ButtonState.NONE;
 
     public SelectObjecArray Perent => _perent;
 
@@ -22,12 +22,9 @@ public class SelectObject : UIObjectBase,ISelectObject
         _perent = perent;
         ActiveUIObject(false);
     }
-    /// <summary>
-    /// 選択時実行関数
-    /// </summary>
-    /// <param name="isSelect"></param>
-    public virtual void Selected(bool isSelect)
+    public virtual void IsSelect(bool isSelect)
     {
+        if (!_event) return;
         if (isSelect)
         {
             if (_state != ButtonState.DISIDED)
@@ -58,7 +55,6 @@ public class SelectObject : UIObjectBase,ISelectObject
         }
         _objectAnimator.SetBool("IsSelect", isSelect);
     }
-
     public void DoEvent()
     {
         _event.onClick.Invoke();

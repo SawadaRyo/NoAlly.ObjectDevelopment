@@ -39,11 +39,13 @@ public class MenuPresenter : MonoBehaviour
         _menuHander.IsDiside.Skip(1)
             .Subscribe(isDiside =>
             {
+                if (!isDiside) return;
                 _menuManager.OnDisaide();
             });
         _menuHander.IsCansel.Skip(1)
             .Subscribe(isCansel =>
             {
+                if(!isCansel) return;
                 _menuManager.OnCansel();
             });
     }

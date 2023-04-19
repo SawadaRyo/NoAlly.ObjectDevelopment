@@ -17,5 +17,17 @@ public interface ISelectObject
     /// 選択時実行関数
     /// </summary>
     /// <param name="isSelect"></param>
-    public void Selected(bool isSelect);
+    public void IsSelect(bool isSelect);
+    /// <summary>
+    /// ボタンのイベントを実行する
+    /// </summary>
+    public void DoEvent();
+    /// <summary>
+    /// メニュー展開時実行関数
+    /// </summary>
+    public void Extended();
+    /// <summary>
+    /// メニュー収納実行関数
+    /// </summary>
+    public void Closed();
 }
