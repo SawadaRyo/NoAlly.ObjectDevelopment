@@ -19,6 +19,7 @@ public class WeaponMenu : MonoBehaviour
     public IReadOnlyReactiveProperty<WeaponType> MainWeapon => _mainWeapon;
     public IReadOnlyReactiveProperty<WeaponType> SubWeapon => _subWeapon;
 
+   
 
     /// <summary> ‘•”õ•Ší‚ğØ‚è‘Ö‚¦‚é</summary>
     /// <param name="weaponName"></param>

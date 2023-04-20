@@ -11,13 +11,14 @@ public class SelectObject : UIObjectBase, ISelectObject
     [SerializeField, Header("ボタンの配色")]
     Color[] _buttonColors = { Color.white, Color.yellow };
 
-    [Tooltip("")] SelectObjecArray _perent = null;
+    [Tooltip("")] SelectObjecArrayBase _perent = null;
     [Tooltip("ボタンの状態")]
     ButtonState _state = ButtonState.NONE;
 
-    public SelectObjecArray Perent => _perent;
+    public SelectObjecArrayBase Perent => _perent;
+    public Button Event => _event;
 
-    public virtual void Initialize(SelectObjecArray perent)
+    public virtual void Initialize(SelectObjecArrayBase perent)
     {
         _perent = perent;
         ActiveUIObject(false);
@@ -78,7 +79,7 @@ public enum ButtonState : int
 
 public enum CommandType : int
 {
-    MAIN, //メイン武器
-    SUB, //サブ武器
+    MAINWEAPON, //メイン武器
+    SUBWEAPON, //サブ武器
     ELEMENT //属性
 }

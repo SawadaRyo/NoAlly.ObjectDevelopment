@@ -45,6 +45,7 @@ public enum WeaponType
 
 public enum ElementType
 {
+    NONE = -1,
     RIGIT = 0,
     FIRE = 1,
     ELEKE = 2,

@@ -35,11 +35,11 @@ public class WeaponProcessing : MonoBehaviour
     {
         if (!weaponSwitch)
         {
-            _targetWeapon = _mainAndSub[(int)CommandType.MAIN];
+            _targetWeapon = _mainAndSub[(int)CommandType.MAINWEAPON];
         }
         else
         {
-            _targetWeapon = _mainAndSub[(int)CommandType.SUB];
+            _targetWeapon = _mainAndSub[(int)CommandType.SUBWEAPON];
         }
     }
     /// <summary>

@@ -33,7 +33,7 @@ public class WeaponPresenter : MonoBehaviour
         _weaponEquipment.MainWeapon
             .Subscribe(mainWeapon =>
             {
-                _weaponProcessing.SetEquipment(mainWeapon, CommandType.MAIN);
+                _weaponProcessing.SetEquipment(mainWeapon, CommandType.MAINWEAPON);
                 //_weaponProcessing.TargetWeapon.Base.WeaponModeToElement(_weaponEquipment.Element.Value);
             }).AddTo(this);
         _weaponEquipment.Element

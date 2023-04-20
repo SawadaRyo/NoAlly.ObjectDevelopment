@@ -1,21 +1,19 @@
 using System;
-using System.Linq;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MenuManagerBase : UIObjectBase
 {
     [SerializeField, Header("MenuPanelの初期選択画面")]
-    SelectObjecArray _firstSelectObjects = null;
+    SelectObjecArrayBase _firstSelectObjects = null;
 
     [Tooltip("選択中のボタン")]
     SelectObject _targetButton = default;
     [Tooltip("現在展開中のメニュー画面")]
-    SelectObjecArray _currentMenuPanel = null;
+    SelectObjecArrayBase _currentMenuPanel = null;
     [Tooltip("ひとつ前のメニュー画面")]
-    SelectObjecArray _beforeMenuPanel = null;
+    SelectObjecArrayBase _beforeMenuPanel = null;
 
-
+    
 
     /// <summary>
     /// 初期化関数
@@ -37,12 +35,15 @@ public class MenuManagerBase : UIObjectBase
         if (isMenuOpen)
         {
             _firstSelectObjects.Extended();
+            Array.ForEach(_firstSelectObjects.Childlen, childlen =>
+            {
+                Array.ForEach(childlen.ChildArrays, x => x.Extended());
+            });
             _targetButton = _firstSelectObjects.Select();
-            _targetButton.Selected(true);
         }
         else
         {
-            _targetButton.Selected(false);
+            _targetButton.IsSelect(false);
             _firstSelectObjects.Closed();
         }
         ActiveUIObject(isMenuOpen);
@@ -55,7 +56,7 @@ public class MenuManagerBase : UIObjectBase
     /// <param name="y"></param>
     public void SelectTaretButton(int x, int y)
     {
-        _targetButton.Selected(false);
+        _targetButton.IsSelect(false);
         _targetButton = _currentMenuPanel.Select(x, y);
     }
 
@@ -64,13 +65,15 @@ public class MenuManagerBase : UIObjectBase
     /// </summary>
     public void OnDisaide()
     {
-        if (_targetButton is SelectObjecArray selectObjecArray)
+        if (_targetButton is SelectObjecArrayBase selectObjecArray)
         {
-            _currentMenuPanel.Selected(false); //直前まで展開していた画面を閉じる
-            _currentMenuPanel.ActiveUIObject(false);
+            _currentMenuPanel.IsSelect(false); //直前まで展開していた画面を閉じる
             _beforeMenuPanel = selectObjecArray.Perent; //ひとつ前の画面を指定
             _currentMenuPanel = selectObjecArray; //現在の画面を指定
-            _currentMenuPanel.Extended(); 
+            Array.ForEach(_currentMenuPanel.Childlen, childlen =>
+            {
+                Array.ForEach(childlen.ChildArrays, x => x.ActiveUIObject(true));
+            });
             _targetButton = _currentMenuPanel.Select();//現在の画面を展開
         }
         else if (_targetButton is SelectObject)
@@ -84,15 +87,17 @@ public class MenuManagerBase : UIObjectBase
     /// </summary>
     public void OnCansel()
     {
-        _currentMenuPanel.Closed();
+        _currentMenuPanel.IsSelect(false);
+        Array.ForEach(_currentMenuPanel.Childlen, childlen =>
+        {
+            Array.ForEach(childlen.ChildArrays, x => x.ActiveUIObject(false));
+        });
         _currentMenuPanel = _beforeMenuPanel;
-
         if (_currentMenuPanel.Perent
-         && _currentMenuPanel.Perent is SelectObjecArray selectObjecPerent)
+         && _currentMenuPanel.Perent is SelectObjecArrayBase selectObjecPerent)
         {
             _beforeMenuPanel = selectObjecPerent;
         }
-        _currentMenuPanel.Extended();
         _targetButton = _currentMenuPanel.Select();
     }
 }
