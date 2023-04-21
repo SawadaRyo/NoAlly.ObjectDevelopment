@@ -13,7 +13,7 @@ public class WeaponPresenter : MonoBehaviour
     [Space(15)]
     [Header("Model")]
     [SerializeField, Header("WeaponEquipment‚ðŠi”[‚·‚éŠÖ”")]
-    WeaponMenu _weaponEquipment = null;
+    WeaponMenu[] _weaponEquipment = null;
 
     [Space(15)]
     [Header("View")]
@@ -24,30 +24,36 @@ public class WeaponPresenter : MonoBehaviour
     void Awake()
     {
         //_weaponData = new SetWeaponData(_weaponScriptableObjects);
-        WeaponEquipmentState();
+        //WeaponEquipmentState();
         WeaponProcessingState();
     }
-    void WeaponEquipmentState()
-    {
-        //•Ší‚Ì‘•”õî•ñ
-        _weaponEquipment.MainWeapon
-            .Subscribe(mainWeapon =>
-            {
-                _weaponProcessing.SetEquipment(mainWeapon, CommandType.MAINWEAPON);
-                //_weaponProcessing.TargetWeapon.Base.WeaponModeToElement(_weaponEquipment.Element.Value);
-            }).AddTo(this);
-        _weaponEquipment.Element
-            .Subscribe(element =>
-            {
-                _weaponProcessing.SetElement(element);
-            }).AddTo(this);
-    }
+    //void WeaponEquipmentState()
+    //{
+    //    //•Ší‚Ì‘•”õî•ñ
+    //    _weaponEquipment.MainWeapon
+    //        .Subscribe(mainWeapon =>
+    //        {
+    //            _weaponProcessing.SetEquipment(mainWeapon, CommandType.MAINWEAPON);
+    //            //_weaponProcessing.TargetWeapon.Base.WeaponModeToElement(_weaponEquipment.Element.Value);
+    //        }).AddTo(this);
+    //    _weaponEquipment.SubWeapon
+    //       .Subscribe(subWeapon =>
+    //       {
+    //           _weaponProcessing.SetEquipment(subWeapon, CommandType.SUBWEAPON);
+    //           //_weaponProcessing.TargetWeapon.Base.WeaponModeToElement(_weaponEquipment.Element.Value);
+    //       }).AddTo(this);
+    //    _weaponEquipment.Element
+    //        .Subscribe(element =>
+    //        {
+    //            _weaponProcessing.SetElement(element);
+    //        }).AddTo(this);
+    //}
     void WeaponProcessingState()
     {
         _weaponProcessing.IsSwichWeapon
            .Subscribe(isSwich =>
            {
-               
+
 
            }).AddTo(this);
     }

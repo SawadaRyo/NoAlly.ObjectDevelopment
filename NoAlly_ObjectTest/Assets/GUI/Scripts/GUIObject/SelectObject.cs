@@ -10,13 +10,17 @@ public class SelectObject : UIObjectBase, ISelectObject
     Button _event;
     [SerializeField, Header("ボタンの配色")]
     Color[] _buttonColors = { Color.white, Color.yellow };
+    [SerializeField, Tooltip("ボタンの種類")]
+    ButtonKind _buttonKind;
 
-    [Tooltip("")] SelectObjecArrayBase _perent = null;
+    [Tooltip("ボタンの親関係")]
+    SelectObjecArrayBase _perent = null;
     [Tooltip("ボタンの状態")]
     ButtonState _state = ButtonState.NONE;
 
     public SelectObjecArrayBase Perent => _perent;
     public Button Event => _event;
+    public ButtonKind ButtonKind => _buttonKind;
 
     public virtual void Initialize(SelectObjecArrayBase perent)
     {
@@ -81,5 +85,12 @@ public enum CommandType : int
 {
     MAINWEAPON, //メイン武器
     SUBWEAPON, //サブ武器
-    ELEMENT //属性
+    ELEMENT, //属性
+    SKILL //スキル
+}
+
+public enum ButtonKind
+{
+    EQUIPMENT,
+
 }
