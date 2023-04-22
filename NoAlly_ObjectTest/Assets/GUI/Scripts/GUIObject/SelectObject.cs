@@ -83,9 +83,10 @@ public enum ButtonState : int
 
 public enum CommandType : int
 {
-    MAINWEAPON, //メイン武器
-    SUBWEAPON, //サブ武器
-    ELEMENT, //属性
+    NONE = -1,
+    MAINWEAPON = 0, //メイン武器
+    SUBWEAPON = 1, //サブ武器
+    ELEMENT = 2, //属性
     SKILL //スキル
 }
 

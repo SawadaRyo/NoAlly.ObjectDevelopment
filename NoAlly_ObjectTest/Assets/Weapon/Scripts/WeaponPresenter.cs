@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UniRx;
 using DataOfWeapon;
 
@@ -13,41 +10,50 @@ public class WeaponPresenter : MonoBehaviour
     [Space(15)]
     [Header("Model")]
     [SerializeField, Header("WeaponEquipmentÇäiî[Ç∑ÇÈä÷êî")]
-    WeaponMenu[] _weaponEquipment = null;
+    Equipment[] _weaponEquipment = null;
+
+    ReactiveCollection<Equipment> _equipment = new();
 
     [Space(15)]
     [Header("View")]
     [SerializeField, Header("WeaponProcessingÇäiî[Ç∑ÇÈä÷êî")]
     WeaponProcessing _weaponProcessing = null;
 
-    SetWeaponData _weaponData = null;
     void Awake()
     {
+        for (int i = 0; i < _weaponEquipment.Length; i++)
+        {
+            int index = i;
+            _equipment.Add(_weaponEquipment[index]);
+            WeaponEquipmentState(index);
+        }
         //_weaponData = new SetWeaponData(_weaponScriptableObjects);
-        //WeaponEquipmentState();
         WeaponProcessingState();
     }
-    //void WeaponEquipmentState()
-    //{
-    //    //ïêäÌÇÃëïîıèÓïÒ
-    //    _weaponEquipment.MainWeapon
-    //        .Subscribe(mainWeapon =>
-    //        {
-    //            _weaponProcessing.SetEquipment(mainWeapon, CommandType.MAINWEAPON);
-    //            //_weaponProcessing.TargetWeapon.Base.WeaponModeToElement(_weaponEquipment.Element.Value);
-    //        }).AddTo(this);
-    //    _weaponEquipment.SubWeapon
-    //       .Subscribe(subWeapon =>
-    //       {
-    //           _weaponProcessing.SetEquipment(subWeapon, CommandType.SUBWEAPON);
-    //           //_weaponProcessing.TargetWeapon.Base.WeaponModeToElement(_weaponEquipment.Element.Value);
-    //       }).AddTo(this);
-    //    _weaponEquipment.Element
-    //        .Subscribe(element =>
-    //        {
-    //            _weaponProcessing.SetElement(element);
-    //        }).AddTo(this);
-    //}
+    void WeaponEquipmentState(int index)
+    {
+        //ïêäÌÇÃëïîıèÓïÒ
+        _weaponEquipment[index].MainWeapon
+            .Subscribe(mainWeapon =>
+            {
+                _weaponProcessing.SetEquipment(mainWeapon, CommandType.MAINWEAPON);
+                Debug.Log(mainWeapon);
+                //_weaponProcessing.TargetWeapon.Base.WeaponModeToElement(_weaponEquipment.Element.Value);
+            }).AddTo(this);
+        _weaponEquipment[index].SubWeapon
+           .Subscribe(subWeapon =>
+           {
+               _weaponProcessing.SetEquipment(subWeapon, CommandType.SUBWEAPON);
+               Debug.Log(subWeapon);
+               //_weaponProcessing.TargetWeapon.Base.WeaponModeToElement(_weaponEquipment.Element.Value);
+           }).AddTo(this);
+        _weaponEquipment[index].Element
+            .Subscribe(element =>
+            {
+                _weaponProcessing.SetElement(element);
+            }).AddTo(this);
+
+    }
     void WeaponProcessingState()
     {
         _weaponProcessing.IsSwichWeapon

@@ -8,7 +8,7 @@ namespace DimensionalArray
     
     //シリアライズされた子要素クラス
     [System.Serializable]
-    public class GenericArray<T> where T : MonoBehaviour
+    public class GenericArray<T>
     {
         [SerializeField]
         T[] _childArray;

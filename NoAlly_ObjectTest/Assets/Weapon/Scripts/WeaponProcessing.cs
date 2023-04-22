@@ -10,7 +10,6 @@ public class WeaponProcessing : MonoBehaviour
     [SerializeField, Header("武器のアニメーター")]
     Animator _weaponAnimator = null;
 
-
     [Tooltip("全武器のデータ")]
     WeaponDatas[] _weaponDatas = new WeaponDatas[Enum.GetValues(typeof(WeaponType)).Length];
     [Tooltip("メイン武器とサブ武器")]
@@ -19,14 +18,15 @@ public class WeaponProcessing : MonoBehaviour
     [Tooltip("装備している武器")]
     WeaponDatas _targetWeapon;
 
-    float time = 0;
-
     BoolReactiveProperty _isSwichWeapon = new BoolReactiveProperty();
 
     public WeaponDatas TargetWeapon { get => _targetWeapon; set => _targetWeapon = value; }
     public IReadOnlyReactiveProperty<bool> IsSwichWeapon => _isSwichWeapon;
 
-
+    public void WeaponDeformation()
+    {
+        _weaponAnimator.SetInteger("WeaponType", (int)_targetWeapon.Type);
+    }
 
     /// <summary>
     /// メイン武器・サブ武器の装備をボタンで切り替える関数
@@ -54,13 +54,14 @@ public class WeaponProcessing : MonoBehaviour
     }
     public void SetElement(ElementType elementType)
     {
-        switch(elementType)
+        switch (elementType)
         {
             case ElementType.RIGIT:
                 _weaponAnimator.SetBool("IsOpen", false);
                 break;
             default:
                 _weaponAnimator.SetBool("IsOpen", true);
+
                 break;
         }
     }

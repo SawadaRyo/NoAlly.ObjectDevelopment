@@ -5313,6 +5313,7 @@ GameObject:
   - component: {fileID: 835445112549933972}
   - component: {fileID: 5785630500104816687}
   - component: {fileID: 4009065848111511044}
+  - component: {fileID: 4822883628553624563}
   m_Layer: 7
   m_Name: Brastar 1
   m_TagString: Untagged
@@ -5376,6 +5377,19 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.7, z: 0}
+--- !u!114 &4822883628553624563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9153705405047431978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e4ff0b0d96e0b34e8c06cf76890967c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponAnimator: {fileID: 5785630500104816687}
 --- !u!1001 &852632005689342466
 PrefabInstance:
   m_ObjectHideFlags: 0
