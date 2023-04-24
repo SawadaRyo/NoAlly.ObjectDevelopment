@@ -18,6 +18,8 @@ public class WeaponPresenter : MonoBehaviour
     [Header("View")]
     [SerializeField, Header("WeaponProcessing‚ðŠi”[‚·‚éŠÖ”")]
     WeaponProcessing _weaponProcessing = null;
+    [SerializeField, Header("")]
+    WeaponElementColor _weaponElementColor = null;
 
     void Awake()
     {
@@ -33,24 +35,26 @@ public class WeaponPresenter : MonoBehaviour
     void WeaponEquipmentState(int index)
     {
         //•Ší‚Ì‘•”õî•ñ
-        _weaponEquipment[index].MainWeapon
+        _weaponEquipment[index].MainWeapon.Skip(1)
             .Subscribe(mainWeapon =>
             {
                 _weaponProcessing.SetEquipment(mainWeapon, CommandType.MAINWEAPON);
                 Debug.Log(mainWeapon);
-                //_weaponProcessing.TargetWeapon.Base.WeaponModeToElement(_weaponEquipment.Element.Value);
             }).AddTo(this);
-        _weaponEquipment[index].SubWeapon
+        _weaponEquipment[index].SubWeapon.Skip(1)
            .Subscribe(subWeapon =>
            {
                _weaponProcessing.SetEquipment(subWeapon, CommandType.SUBWEAPON);
                Debug.Log(subWeapon);
-               //_weaponProcessing.TargetWeapon.Base.WeaponModeToElement(_weaponEquipment.Element.Value);
            }).AddTo(this);
-        _weaponEquipment[index].Element
+        _weaponEquipment[index].Element.Skip(1)
             .Subscribe(element =>
             {
                 _weaponProcessing.SetElement(element);
+                if (element != ElementType.RIGIT)
+                {
+                    _weaponElementColor.ChangeColor(element);
+                }
             }).AddTo(this);
 
     }

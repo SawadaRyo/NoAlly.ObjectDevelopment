@@ -29,12 +29,12 @@ public class MenuPresenter : MonoBehaviour
         _menuHander.IsOpen.Skip(1)
             .Subscribe(isMenuOpen =>
             {
-                _menuManager.IsMenuOpen(isMenuOpen);
+                _menuManager.IsMenuOpen();
             });
         _menuHander.InputCross.Skip(1)
             .Subscribe(inputCross =>
             {
-                _menuManager.SelectTaretButton(inputCross.Item1, inputCross.Item2);
+                _menuManager.SelectTargetButton(inputCross.Item1, inputCross.Item2);
             });
         _menuHander.IsDiside.Skip(1)
             .Subscribe(isDiside =>

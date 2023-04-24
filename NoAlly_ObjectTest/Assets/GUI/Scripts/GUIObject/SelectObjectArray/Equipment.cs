@@ -1,14 +1,15 @@
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Equipment : SelectObjecArrayBase
 {
     [SerializeField]
     CommandType _commandType = CommandType.NONE;
 
-    (WeaponType, WeaponType, ElementType) _isEquipment = new();
 
     [Tooltip("‘•”õ’†‚Ì•Ší‚Æ‘®«")]
+    (WeaponType, WeaponType, ElementType) _isEquipment = new();
     ReactiveProperty<WeaponType> _mainWeapon = new();
     ReactiveProperty<WeaponType> _subWeapon = new();
     ReactiveProperty<ElementType> _elementType = new();
@@ -67,6 +68,7 @@ public class Equipment : SelectObjecArrayBase
                 _isEquipment.Item1 = beforeWeapons;
             }
         }
+        //_switchImage.material = _
     }
     /// <summary>
     /// ‘®«‚ğØ‚è‘Ö‚¦‚é
@@ -74,8 +76,7 @@ public class Equipment : SelectObjecArrayBase
     /// <param name="element"></param>
     public void EquipmentElement(ElementType element)
     {
-        ElementType e = element;
-        _isEquipment.Item3 = e;
+        _isEquipment.Item3 = element;
     }
 
     public override void Closed()

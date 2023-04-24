@@ -20,7 +20,7 @@ public class WeaponProcessing : MonoBehaviour
 
     BoolReactiveProperty _isSwichWeapon = new BoolReactiveProperty();
 
-    public WeaponDatas TargetWeapon { get => _targetWeapon; set => _targetWeapon = value; }
+    public WeaponDatas TargetWeapon => _targetWeapon; 
     public IReadOnlyReactiveProperty<bool> IsSwichWeapon => _isSwichWeapon;
 
     public void WeaponDeformation()

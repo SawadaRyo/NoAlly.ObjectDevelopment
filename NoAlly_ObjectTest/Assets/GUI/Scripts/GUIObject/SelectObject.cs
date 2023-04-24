@@ -1,11 +1,10 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SelectObject : UIObjectBase, ISelectObject
 {
+    [SerializeField,Header("切り替わる画像")]
+    protected Image _switchImage = null;
     [SerializeField, Header("決定時のイベント")]
     Button _event;
     [SerializeField, Header("ボタンの配色")]
@@ -19,6 +18,7 @@ public class SelectObject : UIObjectBase, ISelectObject
     ButtonState _state = ButtonState.NONE;
 
     public SelectObjecArrayBase Perent => _perent;
+    public Image SwitchImage => _switchImage;
     public Button Event => _event;
     public ButtonKind ButtonKind => _buttonKind;
 
