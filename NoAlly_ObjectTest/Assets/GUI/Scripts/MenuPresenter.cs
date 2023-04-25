@@ -27,6 +27,7 @@ public class MenuPresenter : MonoBehaviour
     void ObjectSelect()
     {
         _menuHander.IsOpen.Skip(1)
+            .Where(isMenuOpen => isMenuOpen)
             .Subscribe(isMenuOpen =>
             {
                 _menuManager.IsMenuOpen();

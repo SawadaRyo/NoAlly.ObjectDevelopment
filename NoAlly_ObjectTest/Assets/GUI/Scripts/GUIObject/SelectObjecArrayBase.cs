@@ -79,6 +79,4 @@ public class SelectObjecArrayBase : SelectObject
         _childlenArray[_currentCross.Item2].ChildArrays[_currentCross.Item1].IsSelect(true);
         return _childlenArray[_currentCross.Item2].ChildArrays[_currentCross.Item1];
     }
-    
-
 }

@@ -31,10 +31,7 @@ public class MenuHanderBase : MonoBehaviour, IMenuHander
 
     public void OnUpdate()
     {
-        if (Input.GetButtonDown("MenuSwitch"))
-        {
-            _isOpen.Value = !_isOpen.Value;
-        }
+        _isOpen.Value = Input.GetButtonDown("MenuSwitch");
 
         if (_isOpen.Value)
         {
