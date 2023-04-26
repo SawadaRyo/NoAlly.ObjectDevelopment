@@ -31,19 +31,15 @@ public class MenuHanderBase : MonoBehaviour, IMenuHander
 
     public void OnUpdate()
     {
+        // メニューのボタン操作
         _isOpen.Value = Input.GetButtonDown("MenuSwitch");
-
-        if (_isOpen.Value)
+        _reactiveIsDiside.Value = Input.GetButtonDown("Decision"); //決定
+        _reactiveIsCansel.Value = Input.GetButtonDown("CanselButton"); //戻る
+        (int, int) inputCross = ((int)Input.GetAxisRaw("CrossKeyH"), (int)Input.GetAxisRaw("CrossKeyV"));//(横入力,縦入力)
+        if (_canMove.IsCountUp() && (inputCross.Item1 != 0 || inputCross.Item2 != 0))
         {
-            // メニューのボタン操作
-            _reactiveIsDiside.Value = Input.GetButtonDown("Decision"); //決定
-            _reactiveIsCansel.Value = Input.GetButtonDown("CanselButton"); //戻る
-            (int, int) inputCross = ((int)Input.GetAxisRaw("CrossKeyH"), (int)Input.GetAxisRaw("CrossKeyV"));//(横入力,縦入力)
-            if (_canMove.IsCountUp() && (inputCross.Item1 != 0 || inputCross.Item2 != 0))
-            {
-                _canMove.ResetTimer();
-                _inputCross.SetValueAndForceNotify(inputCross);
-            }
+            _canMove.ResetTimer();
+            _inputCross.SetValueAndForceNotify(inputCross);
         }
     }
 

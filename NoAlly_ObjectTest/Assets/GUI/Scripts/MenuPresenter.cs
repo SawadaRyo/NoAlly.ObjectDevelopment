@@ -17,11 +17,13 @@ public class MenuPresenter : MonoBehaviour
         _menuHander.Initialize();
         _menuManager.Initialize();
         ObjectSelect();
+        UpdateMenu();
     }
 
-    void Update()
+    void UpdateMenu()
     {
-        _menuHander.OnUpdate();
+        Observable.EveryUpdate()
+            .Subscribe(_ => _menuHander.OnUpdate()).AddTo(this);
     }
 
     void ObjectSelect()
@@ -31,23 +33,23 @@ public class MenuPresenter : MonoBehaviour
             .Subscribe(isMenuOpen =>
             {
                 _menuManager.IsMenuOpen();
-            });
+            }).AddTo(this);
         _menuHander.InputCross.Skip(1)
             .Subscribe(inputCross =>
             {
                 _menuManager.SelectTargetButton(inputCross.Item1, inputCross.Item2);
-            });
+            }).AddTo(this);
         _menuHander.IsDiside.Skip(1)
             .Subscribe(isDiside =>
             {
                 if (!isDiside) return;
                 _menuManager.OnDisaide();
-            });
+            }).AddTo(this);
         _menuHander.IsCansel.Skip(1)
             .Subscribe(isCansel =>
             {
-                if(!isCansel) return;
+                if (!isCansel) return;
                 _menuManager.OnCansel();
-            });
+            }).AddTo(this);
     }
 }

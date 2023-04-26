@@ -2301,7 +2301,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1175368114099012755}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -5405,12 +5405,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interval: 0.1
   _weaponRenderer:
-  - {fileID: 2715473356051015709}
-  - {fileID: 2794318035981667794}
-  - {fileID: 7402933140166143896}
-  - {fileID: 5096012824374426681}
-  - {fileID: 1516635459469811749}
-  - {fileID: 4907600562354509511}
+  - _childArray: []
+  - _childArray: []
+  - _childArray: []
+  - _childArray: []
+  - _childArray: []
+  - _childArray: []
   _weaponElementColor:
   - {r: 1, g: 1, b: 1, a: 0}
   - {r: 1, g: 0.50980395, b: 0, a: 0.49803922}
