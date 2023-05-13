@@ -1,23 +1,26 @@
 using UnityEngine;
 
-//[CreateAssetMenu()"Misson",order = 0)]
+[CreateAssetMenu(fileName = "MissonData", menuName = "ScriptableObjects/Misson")]
 
 [System.Serializable]
 
-public class MissonBase : ScriptableObject
+public class MissonBase : ScriptableObject,IMissonBase
 {
     [SerializeField,Tooltip("ミッションの名前")]
     string _missonName = null;
     [SerializeField,Tooltip("ミッションの説明")]
     string _missonExplan = null;
     [SerializeField,Tooltip("ミッションの系統")]
-    MissonType _missonType;
+    int _missonDepth;
 
     [Tooltip("ミッションの解放判定")]
     bool _missonEnabled = false;
+    [Tooltip("ミッションのクリア判定")]
+    bool _missonClear = false;
 
+    public bool MissonEnabled => _missonEnabled;
+    public bool MissonClear => _missonClear;
     public string MissonName => _missonName;
     public string MissonExplan => _missonExplan;
-    public MissonType MissonType => _missonType;
-    public bool IsMissonEnabled => _missonEnabled;
+    public int MissonDepth => _missonDepth;
 }
