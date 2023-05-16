@@ -2,13 +2,13 @@
 public interface IMissonBase
 {
     /// <summary>
-    /// ミッションの解放判定
-    /// </summary>
-    public bool MissonEnabled { get; }
-    /// <summary>
     /// ミッションのクリア判定
     /// </summary>
     public bool MissonClear { get; }
+    /// <summary>
+    /// ミッションの種類
+    /// </summary>
+    public MissonType MissonType { get; }
     /// <summary>
     /// ミッション名
     /// </summary>

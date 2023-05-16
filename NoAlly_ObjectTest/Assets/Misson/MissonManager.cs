@@ -16,6 +16,16 @@ public class MissonManager : MonoBehaviour, IMissonManager
         _missons.Add(misson);
     }
 
+    public void MissonStart()
+    {
+        
+    }
+
+    public void MissonClear()
+    {
+        
+    }
+
     public void RemoveMisson(IMissonBase misson)
     {
         _missons.Remove(misson);
