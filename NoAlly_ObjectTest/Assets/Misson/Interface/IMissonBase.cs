@@ -6,9 +6,9 @@ public interface IMissonBase
     /// </summary>
     public bool MissonClear { get; }
     /// <summary>
-    /// ミッションの種類
+    /// ミッションID
     /// </summary>
-    public MissonType MissonType { get; }
+    public int MissonID { get; }
     /// <summary>
     /// ミッション名
     /// </summary>
@@ -21,4 +21,8 @@ public interface IMissonBase
     /// ミッションを解放する攻略深度
     /// </summary>
     public int MissonDepth { get; }
+    /// <summary>
+    /// ミッションの種類
+    /// </summary>
+    public MissonType MissonType { get; }
 }
