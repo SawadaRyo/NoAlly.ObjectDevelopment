@@ -11,11 +11,6 @@ public class MissonManager : MonoBehaviour, IMissonManager
 
     public List<IMissonBase> MissonBases => _missons;
 
-    public void AddMisson(IMissonBase misson)
-    {
-        _missons.Add(misson);
-    }
-
     public void MissonStart()
     {
         
@@ -24,6 +19,11 @@ public class MissonManager : MonoBehaviour, IMissonManager
     public void MissonClear()
     {
         
+    }
+
+    public void AddMisson(IMissonBase misson)
+    {
+        _missons.Add(misson);
     }
 
     public void RemoveMisson(IMissonBase misson)

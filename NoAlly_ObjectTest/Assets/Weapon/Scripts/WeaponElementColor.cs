@@ -15,7 +15,7 @@ public class WeaponElementColor : MonoBehaviour
     [Tooltip("åªç›ÇÃëÆê´")]
     ElementType _currentElement;
 
-    public void IsActive(WeaponType weaponType, ElementType elementType)
+    public void IsActiveElement(WeaponType weaponType, ElementType elementType)
     {
         switch (elementType)
         {
@@ -29,7 +29,7 @@ public class WeaponElementColor : MonoBehaviour
         ChangeColor(elementType);
     }
 
-    public void ChangeColor(ElementType elementType)
+    void ChangeColor(ElementType elementType)
     {
         if (elementType == _currentElement) return;
         foreach (var weaponRenderer in _weaponRenderer[(int)elementType].ChildArrays)

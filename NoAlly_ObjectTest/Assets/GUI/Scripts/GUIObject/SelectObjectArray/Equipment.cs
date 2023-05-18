@@ -1,6 +1,9 @@
 using UniRx;
 using UnityEngine;
-using UnityEngine.UI;
+
+/// <summary>
+/// 子オブジェクトのボタンの処理を管理するクラス
+/// </summary>
 
 public class Equipment : SelectObjecArrayBase
 {

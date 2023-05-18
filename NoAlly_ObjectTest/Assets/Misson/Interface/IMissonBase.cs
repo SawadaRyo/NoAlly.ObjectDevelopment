@@ -21,8 +21,4 @@ public interface IMissonBase
     /// ミッションを解放する攻略深度
     /// </summary>
     public int MissonDepth { get; }
-    /// <summary>
-    /// ミッションの種類
-    /// </summary>
-    public MissonType MissonType { get; }
 }

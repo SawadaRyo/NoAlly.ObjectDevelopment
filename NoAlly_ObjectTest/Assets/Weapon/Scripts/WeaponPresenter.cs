@@ -21,6 +21,8 @@ public class WeaponPresenter : MonoBehaviour
     [SerializeField, Header("")]
     WeaponElementColor _weaponElementColor = null;
 
+    WeaponType _cullentWeaponType;
+
     void Awake()
     {
         for (int i = 0; i < _weaponEquipment.Length; i++)
@@ -39,12 +41,14 @@ public class WeaponPresenter : MonoBehaviour
             .Subscribe(mainWeapon =>
             {
                 _weaponProcessing.SetEquipment(mainWeapon, CommandType.MAINWEAPON);
+                _cullentWeaponType = mainWeapon;
                 Debug.Log(mainWeapon);
             }).AddTo(this);
         _weaponEquipment[index].SubWeapon.Skip(1)
            .Subscribe(subWeapon =>
            {
                _weaponProcessing.SetEquipment(subWeapon, CommandType.SUBWEAPON);
+               _cullentWeaponType = subWeapon;
                Debug.Log(subWeapon);
            }).AddTo(this);
         _weaponEquipment[index].Element.Skip(1)
@@ -53,7 +57,7 @@ public class WeaponPresenter : MonoBehaviour
                 _weaponProcessing.SetElement(element);
                 if (element != ElementType.RIGIT)
                 {
-                    _weaponElementColor.ChangeColor(element);
+                    _weaponElementColor.IsActiveElement(_cullentWeaponType,element);
                 }
             }).AddTo(this);
 

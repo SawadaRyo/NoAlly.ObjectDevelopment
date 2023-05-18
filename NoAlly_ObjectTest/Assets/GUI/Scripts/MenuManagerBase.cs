@@ -8,7 +8,7 @@ public class MenuManagerBase : UIObjectBase
 
 
     [Tooltip("選択中のボタン")]
-    SelectObject _targetButton = default;
+    UIObjectBase _targetButton = default;
     [Tooltip("現在展開中のメニュー画面")]
     SelectObjecArrayBase _currentMenuPanel = null;
     [Tooltip("ひとつ前のメニュー画面")]
@@ -80,7 +80,7 @@ public class MenuManagerBase : UIObjectBase
             });
             _targetButton = _currentMenuPanel.Select();//現在の画面を展開
         }
-        else if (_targetButton is SelectObject)
+        else if (_targetButton is WeaponSelect)
         {
             _targetButton.DoEvent();
         }

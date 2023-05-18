@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EquipmentButton : SelectObject
+public class EquipmentButton : WeaponSelect
 {
     CommandType _commandType;
     WeaponType _weaponType;

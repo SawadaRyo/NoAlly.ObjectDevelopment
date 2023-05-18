@@ -6,23 +6,12 @@ using UnityEngine.Events;
 using Cysharp.Threading.Tasks;　　　//　<=　☆　宣言を追加します
 
 /// <summary>
-/// シート名の登録用
-/// </summary>
-public enum SheetName
-{
-    None,        // 自分の作成したスプレッドシート内のシートの名前を登録します
-    SkillData,
-    ItemData,
-    EventData
-}
-
-/// <summary>
 /// 読み込むシートのデータ群。シートの情報を管理します
 /// </summary>
 [System.Serializable]
 public class SheetData
 {
-    public SheetName SheetName;
+    public MissonType SheetName;
     public List<string[]> DatasList = new List<string[]>();
 }
 

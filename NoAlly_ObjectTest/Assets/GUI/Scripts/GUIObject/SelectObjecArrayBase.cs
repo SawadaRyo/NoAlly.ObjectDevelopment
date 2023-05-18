@@ -2,18 +2,18 @@ using UnityEngine;
 using DimensionalArray;
 using System;
 
-public class SelectObjecArrayBase : SelectObject
+public class SelectObjecArrayBase : UIObjectBase
 {
     [SerializeField, Header("このオブジェクトのメニュー深度")]
     int _depthOfMenu = 0;
     [SerializeField, Header("このオブジェクトの子関係にあるボタンオブジェクト")]
-    protected GenericArray<SelectObject>[] _childlenArray = null;
+    protected GenericArray<UIObjectBase>[] _childlenArray = null;
 
     [Tooltip("")]
     (int, int) _currentCross = (0, 0);
 
     public int DepthOfMenu => _depthOfMenu;
-    public GenericArray<SelectObject>[] Childlen => _childlenArray;
+    public GenericArray<UIObjectBase>[] Childlen => _childlenArray;
     protected virtual void SetButtonEvent() { }
 
     public override void Initialize(SelectObjecArrayBase perent)
@@ -36,12 +36,12 @@ public class SelectObjecArrayBase : SelectObject
             Array.ForEach(childlen.ChildArrays, x => x.Closed());
         });
     }
-    public SelectObject Select()
+    public UIObjectBase Select()
     {
         _childlenArray[_currentCross.Item2].ChildArrays[_currentCross.Item1].IsSelect(true);
         return _childlenArray[_currentCross.Item2].ChildArrays[_currentCross.Item1];
     }
-    public SelectObject Select(int x, int y)
+    public UIObjectBase Select(int x, int y)
     {
         if (x < 0)
         {
