@@ -147,6 +147,7 @@ MonoBehaviour:
   _objectAnimator: {fileID: 271802447054873863}
   _event: {fileID: 271802447054873864}
   _depthOfMenu: 1
+  _buttonArrayExtend: {fileID: 3442310564360919411}
   _childlenArray:
   - _childArray:
     - {fileID: 5919156826582516880}
@@ -228,6 +229,7 @@ GameObject:
   m_Component:
   - component: {fileID: 271802447236011569}
   - component: {fileID: 271802447236011570}
+  - component: {fileID: 3442310564360919411}
   m_Layer: 0
   m_Name: Allay
   m_TagString: Untagged
@@ -283,6 +285,21 @@ MonoBehaviour:
   m_Spacing: {x: 25, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &3442310564360919411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271802447236011568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f91e215fdfc191a4b8db235a5d0761d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gridLayout: {fileID: 271802447236011570}
+  _tweenTime: 0.2
+  _tweenVecter: 1
 --- !u!1 &290613950236882093
 GameObject:
   m_ObjectHideFlags: 0

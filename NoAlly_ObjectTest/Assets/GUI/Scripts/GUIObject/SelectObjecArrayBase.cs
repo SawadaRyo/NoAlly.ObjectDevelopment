@@ -1,11 +1,14 @@
 using UnityEngine;
 using DimensionalArray;
 using System;
+using Cysharp.Threading.Tasks;
 
 public class SelectObjecArrayBase : UIObjectBase
 {
     [SerializeField, Header("このオブジェクトのメニュー深度")]
     int _depthOfMenu = 0;
+    [SerializeField, Header("このオブジェクトの展開時のTween")]
+    ButtonArrayExtend _buttonArrayExtend = null;
     [SerializeField, Header("このオブジェクトの子関係にあるボタンオブジェクト")]
     protected GenericArray<UIObjectBase>[] _childlenArray = null;
 
@@ -28,8 +31,17 @@ public class SelectObjecArrayBase : UIObjectBase
             }
         }
     }
-    public override void Closed()
+    public override void Extended()
     {
+        base.Extended();
+        if (_buttonArrayExtend)
+        {
+            _buttonArrayExtend.ExtendsButton(true);
+        }
+    }
+    public override async void Closed()
+    {
+        await UniTask.WaitUntil(() => _buttonArrayExtend.ExtendsButton(false));
         base.Closed();
         Array.ForEach(_childlenArray, childlen =>
         {
@@ -79,4 +91,5 @@ public class SelectObjecArrayBase : UIObjectBase
         _childlenArray[_currentCross.Item2].ChildArrays[_currentCross.Item1].IsSelect(true);
         return _childlenArray[_currentCross.Item2].ChildArrays[_currentCross.Item1];
     }
+
 }

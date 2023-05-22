@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -80,7 +81,7 @@ public class UIObjectBase : MonoBehaviour, ISelectObject
     }
     public virtual void Extended()
     {
-        ActiveUIObject(true);
+         ActiveUIObject(true);
     }
     public virtual void Closed()
     {
