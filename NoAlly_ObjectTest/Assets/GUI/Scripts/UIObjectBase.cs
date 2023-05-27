@@ -19,8 +19,6 @@ public class UIObjectBase : MonoBehaviour, ISelectObject
     [Tooltip("ボタンの状態")]
     protected ButtonState _state = ButtonState.NONE;
 
-    public Animator ObjectAnimator => _objectAnimator;
-    public bool IsActive => _isActive;
     public SelectObjecArrayBase Perent => _perent;
     public Button Event => _event;
 
@@ -28,7 +26,7 @@ public class UIObjectBase : MonoBehaviour, ISelectObject
     /// オブジェクトの表示
     /// </summary>
     /// <param name="isActive"></param>
-    public void ActiveUIObject(bool isActive)
+    public virtual void ActiveUIObject(bool isActive)
     {
         if (_objectAnimator != null)
         {

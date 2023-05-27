@@ -1,7 +1,6 @@
 using UnityEngine;
 using DimensionalArray;
 using System;
-using Cysharp.Threading.Tasks;
 
 public class SelectObjecArrayBase : UIObjectBase
 {
@@ -17,12 +16,14 @@ public class SelectObjecArrayBase : UIObjectBase
 
     public int DepthOfMenu => _depthOfMenu;
     public GenericArray<UIObjectBase>[] Childlen => _childlenArray;
+    public ButtonArrayExtend ButtonTween => _buttonArrayExtend;
+
     protected virtual void SetButtonEvent() { }
 
     public override void Initialize(SelectObjecArrayBase perent)
     {
-        SetButtonEvent();
         base.Initialize(perent);
+        SetButtonEvent();
         for (int y = 0; y < _childlenArray.Length; y++)
         {
             for (int x = 0; x < _childlenArray[y].ChildArrays.Length; x++)
@@ -31,17 +32,8 @@ public class SelectObjecArrayBase : UIObjectBase
             }
         }
     }
-    public override void Extended()
+    public override void Closed()
     {
-        base.Extended();
-        if (_buttonArrayExtend)
-        {
-            _buttonArrayExtend.ExtendsButton(true);
-        }
-    }
-    public override async void Closed()
-    {
-        await UniTask.WaitUntil(() => _buttonArrayExtend.ExtendsButton(false));
         base.Closed();
         Array.ForEach(_childlenArray, childlen =>
         {

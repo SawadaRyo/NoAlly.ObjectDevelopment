@@ -1,12 +1,16 @@
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 
-public class MenuManagerBase : UIObjectBase
+public class MenuManagerBase : MonoBehaviour
 {
+    [SerializeField, Header("メニュー画面展開時に表示するUI")]
+    UIObjectBase[] _activeUIWhenExtend;
     [SerializeField, Header("MenuPanelの初期選択画面")]
     SelectObjecArrayBase _firstSelectObjects = null;
 
-
+    [Tooltip("")]
+    bool _isActive = false;
     [Tooltip("選択中のボタン")]
     UIObjectBase _targetButton = default;
     [Tooltip("現在展開中のメニュー画面")]
@@ -21,7 +25,6 @@ public class MenuManagerBase : UIObjectBase
     /// </summary>
     public void Initialize()
     {
-        ActiveUIObject(false);
         _firstSelectObjects.Initialize(null);
         _targetButton = _firstSelectObjects.Select(0, 0);
         _currentMenuPanel = _firstSelectObjects;
@@ -50,7 +53,6 @@ public class MenuManagerBase : UIObjectBase
             _currentMenuPanel = _firstSelectObjects;
             _firstSelectObjects.Closed();
         }
-        ActiveUIObject(_isActive);
     }
 
     /// <summary>
@@ -71,14 +73,19 @@ public class MenuManagerBase : UIObjectBase
     {
         if (_targetButton is SelectObjecArrayBase selectObjecArray)
         {
-            _targetButton.IsSelect(false); //直前まで展開していた画面を閉じる
-            _beforeMenuPanel = selectObjecArray.Perent; //ひとつ前の画面を指定
-            _currentMenuPanel = selectObjecArray; //現在の画面を指定
+            _targetButton.IsSelect(false); //直前まで展開していた画面/ボタンを閉じる
+            _beforeMenuPanel = selectObjecArray.Perent; //ひとつ前の画面/ボタンを指定
+            _currentMenuPanel = selectObjecArray; //現在の画面/ボタンを指定
             Array.ForEach(_currentMenuPanel.Childlen, childlen =>
             {
                 Array.ForEach(childlen.ChildArrays, x => x.ActiveUIObject(true));
             });
-            _targetButton = _currentMenuPanel.Select();//現在の画面を展開
+
+            if (_currentMenuPanel.ButtonTween)
+            {
+                _currentMenuPanel.ButtonTween.ExtendsButton(true).Forget();
+            }
+            _targetButton = _currentMenuPanel.Select(); //現在の画面/ボタンを選択
         }
         else if (_targetButton is WeaponSelect)
         {
@@ -89,7 +96,7 @@ public class MenuManagerBase : UIObjectBase
     /// <summary>
     /// キャンセル関数
     /// </summary>
-    public void OnCansel()
+    public async void OnCansel()
     {
         if (!_isActive) return;
 
@@ -99,6 +106,15 @@ public class MenuManagerBase : UIObjectBase
         }
         else
         {
+            if (_currentMenuPanel.ButtonTween) //Tweenアニメーションが終了するまで待機するための処理
+            {
+                var flag = false;
+                if (await _currentMenuPanel.ButtonTween.ExtendsButton(false))
+                {
+                    flag = true;
+                }
+                await UniTask.WaitUntil(() => flag);
+            }
             _currentMenuPanel.IsSelect(false);
             Array.ForEach(_currentMenuPanel.Childlen, childlen =>
             {
