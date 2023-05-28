@@ -1,4 +1,4 @@
-using Cysharp.Threading.Tasks;
+using UniRx;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,8 +12,6 @@ public class UIObjectBase : MonoBehaviour, ISelectObject
     [SerializeField, Header("決定時のイベント")]
     protected Button _event;
 
-    [Tooltip("")]
-    protected bool _isActive = false;
     [Tooltip("ボタンの親関係")]
     protected SelectObjecArrayBase _perent = null;
     [Tooltip("ボタンの状態")]
@@ -73,15 +71,18 @@ public class UIObjectBase : MonoBehaviour, ISelectObject
         }
         _objectAnimator.SetBool("IsSelect", isSelect);
     }
-    public void DoEvent()
+    public void DoEvent(bool isDoEvent)
     {
-        _event.onClick.Invoke();
+        if (isDoEvent)
+        {
+            _event.onClick.Invoke();
+        }
     }
-    public virtual void Extended()
+    public virtual void MenuExtended()
     {
-         ActiveUIObject(true);
+        ActiveUIObject(true);
     }
-    public virtual void Closed()
+    public virtual void MenuClosed()
     {
         ActiveUIObject(false);
     }

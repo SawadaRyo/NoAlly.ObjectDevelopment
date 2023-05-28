@@ -11,7 +11,7 @@ using Cysharp.Threading.Tasks;　　　//　<=　☆　宣言を追加します
 [System.Serializable]
 public class SheetData
 {
-    public MissonType SheetName;
+    public MissonDataPath SheetName;
     public List<string[]> DatasList = new List<string[]>();
 }
 
@@ -23,52 +23,32 @@ public class SheetData
 public class DataReader : MonoBehaviour
 {
 
-    public string SheetID = "1cgSvD5aqdSlMYCYJ0MoecTIybA_ZRWfOPZ98ppZJ0h4/edit#gid=0";
+    [SerializeField] string _gssID = "1cgSvD5aqdSlMYCYJ0MoecTIybA_ZRWfOPZ98ppZJ0h4/edit#gid=0"; //グーグルスプレッドシートにアクセスするためのID
 
-    public UnityEvent OnLoadEnd;　　　// この変数にインスペクターからメソッドを登録しておくと、スプレッドシートを読み込み後にコールバックする
+    [SerializeField,Header("スプレッドシートを読み込み後にコールバックする関数")] 
+    UnityEvent _onLoadEnd;　　　// この変数にインスペクターからメソッドを登録しておくと、スプレッドシートを読み込み後にコールバックする
 
-    [Header("読み込みたいシート名を選択")]
-    public SheetData[] sheetDatas;
-
-
-    ////*　処理を変更　*////
-
-
-    //public void Reload() => StartCoroutine(GetFromWeb());   //  処理を書き換えますのでコメントアウトします
+    [SerializeField,Header("読み込みたいシート名を選択")]
+    SheetData[] _sheetDatas;
 
     public async UniTask Reload() => await GetFromWebAsync();
 
-
-    ////*　処理を変更　*////
-
-
-    ////*　☆①～②の処理を変更・追加　*////
-
-
     public async UniTask GetFromWebAsync()
-    {   //　<=　☆①　メソッドの戻り値、キーワードの追加、メソッド名を非同期処理のメソッドであることがわかる名称に変更します。
+    {   //メソッドの戻り値、キーワードの追加、メソッド名を非同期処理のメソッドであることがわかる名称に変更します。
 
 
         // CancellationToken の作成
         var token = this.GetCancellationTokenOnDestroy();  //　<=　☆②　処理を追加します　
 
-
-        ////*　ここまで　*////
-
-
         // 複数のシートの読み込み
-        for (int i = 0; i < sheetDatas.Length; i++)
+        for (int i = 0; i < _sheetDatas.Length; i++)
         {
 
             // シート名だけ毎回読み込み先を変更する
-            string url = "https://docs.google.com/spreadsheets/d/" + SheetID + "/gviz/tq?tqx=out:csv&sheet=" + sheetDatas[i].SheetName.ToString();
+            string url = "https://docs.google.com/spreadsheets/d/" + _gssID + "/gviz/tq?tqx=out:csv&sheet=" + _sheetDatas[i].SheetName.ToString();
 
             // Web の GoogleSpreadSheet を取得
             UnityWebRequest request = UnityWebRequest.Get(url);
-
-
-            ////*　☆③～④の処理を変更します　*////
-
 
             // 取得できるまで待機
             //yield return request.SendWebRequest();　　　//　<=　☆③　処理を書き換えますのでコメントします
@@ -89,21 +69,13 @@ public class DataReader : MonoBehaviour
 
                 // エラー表示を行い、処理を終了する
                 Debug.LogError(request.error);
-                //yield break;　　　　//　<=　☆④  処理を書き換えますのでコメントします
-
                 return;               //　<=　☆④  処理を書き換えます
             }
-
-
-            ////*　ここまで　*////
-
-
             // GSS の各シートごとのデータを List<string[]> の形で取得
-            sheetDatas[i].DatasList = ConvertToArrayListFromCSV(request.downloadHandler.text);
+            _sheetDatas[i].DatasList = ConvertToArrayListFromCSV(request.downloadHandler.text);
         }
-
         // GSSLoader のメソッドを登録しておいて実行する
-        OnLoadEnd.Invoke();
+        _onLoadEnd.Invoke();
     }
 
     /// <summary>

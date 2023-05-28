@@ -32,12 +32,12 @@ public class SelectObjecArrayBase : UIObjectBase
             }
         }
     }
-    public override void Closed()
+    public override void MenuClosed()
     {
-        base.Closed();
+        base.MenuClosed();
         Array.ForEach(_childlenArray, childlen =>
         {
-            Array.ForEach(childlen.ChildArrays, x => x.Closed());
+            Array.ForEach(childlen.ChildArrays, x => x.MenuClosed());
         });
     }
     public UIObjectBase Select()

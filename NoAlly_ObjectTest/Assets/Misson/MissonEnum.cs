@@ -1,18 +1,23 @@
 /// <summary>
-/// シート名の登録用
+/// ミッションの系統
 /// </summary>
-public enum MissonType
+public enum MissonDataPath
 {
     DeleteEnemy,
     CollectItem,
 }
+/// <summary>
+/// ボタンのステート
+/// </summary>
 public enum ButtonState : int
 {
     NONE, //通常
     SELECTED, //選択中
     DISIDED //決定済み
 }
-
+/// <summary>
+/// ボタンの系統
+/// </summary>
 public enum CommandType : int
 {
     NONE = -1,

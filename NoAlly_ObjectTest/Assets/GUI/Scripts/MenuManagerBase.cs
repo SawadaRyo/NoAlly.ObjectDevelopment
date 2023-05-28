@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class MenuManagerBase : MonoBehaviour
 {
-    [SerializeField, Header("メニュー画面展開時に表示するUI")]
-    UIObjectBase[] _activeUIWhenExtend;
     [SerializeField, Header("MenuPanelの初期選択画面")]
     SelectObjecArrayBase _firstSelectObjects = null;
 
-    [Tooltip("")]
+    [Tooltip("メニュー展開判定")]
     bool _isActive = false;
     [Tooltip("選択中のボタン")]
     UIObjectBase _targetButton = default;
@@ -39,10 +37,10 @@ public class MenuManagerBase : MonoBehaviour
         _isActive = !_isActive;
         if (_isActive)
         {
-            _firstSelectObjects.Extended();
+            _firstSelectObjects.MenuExtended();
             Array.ForEach(_firstSelectObjects.Childlen, childlen =>
             {
-                Array.ForEach(childlen.ChildArrays, x => x.Extended());
+                Array.ForEach(childlen.ChildArrays, x => x.MenuExtended());
             });
             _targetButton = _firstSelectObjects.Select();
         }
@@ -51,7 +49,7 @@ public class MenuManagerBase : MonoBehaviour
             _targetButton.IsSelect(false);
             _targetButton = null;
             _currentMenuPanel = _firstSelectObjects;
-            _firstSelectObjects.Closed();
+            _firstSelectObjects.MenuClosed();
         }
     }
 
@@ -76,10 +74,7 @@ public class MenuManagerBase : MonoBehaviour
             _targetButton.IsSelect(false); //直前まで展開していた画面/ボタンを閉じる
             _beforeMenuPanel = selectObjecArray.Perent; //ひとつ前の画面/ボタンを指定
             _currentMenuPanel = selectObjecArray; //現在の画面/ボタンを指定
-            Array.ForEach(_currentMenuPanel.Childlen, childlen =>
-            {
-                Array.ForEach(childlen.ChildArrays, x => x.ActiveUIObject(true));
-            });
+            Array.ForEach(_currentMenuPanel.Childlen, childlen =>  Array.ForEach(childlen.ChildArrays, x => x.ActiveUIObject(true))); //子オブジェクトを表示
 
             if (_currentMenuPanel.ButtonTween)
             {
@@ -87,9 +82,9 @@ public class MenuManagerBase : MonoBehaviour
             }
             _targetButton = _currentMenuPanel.Select(); //現在の画面/ボタンを選択
         }
-        else if (_targetButton is WeaponSelect)
+        if (_targetButton.Event)
         {
-            _targetButton.DoEvent();
+            _targetButton.DoEvent(true);
         }
     }
 
@@ -116,18 +111,19 @@ public class MenuManagerBase : MonoBehaviour
                 await UniTask.WaitUntil(() => flag);
             }
             _currentMenuPanel.IsSelect(false);
+            _currentMenuPanel.DoEvent(false);
             Array.ForEach(_currentMenuPanel.Childlen, childlen =>
             {
                 Array.ForEach(childlen.ChildArrays, x => x.ActiveUIObject(false));
             });
             _currentMenuPanel = _beforeMenuPanel;
+
             if (_currentMenuPanel.Perent
              && _currentMenuPanel.Perent is SelectObjecArrayBase selectObjecPerent)
             {
                 _beforeMenuPanel = selectObjecPerent;
             }
             _targetButton = _currentMenuPanel.Select();
-
         }
     }
 }

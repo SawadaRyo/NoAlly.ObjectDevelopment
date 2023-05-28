@@ -13,21 +13,17 @@ public abstract class MissonBase : IMissonBase
     string _missonName = null;
     [Tooltip("ミッションの説明")]
     string _missonExplan = null;
-    [Tooltip("ミッションの解放深度")]
-    int _missonDepth = -1;
 
     public bool MissonClear => _missonClear;
     public int MissonID => _missonID;
     public string MissonName => _missonName;
     public string MissonExplan => _missonExplan;
-    public int MissonDepth => _missonDepth;
 
-    public MissonBase(int missonID,string missonName,string missonExplan,int missonDepth)
+    public MissonBase(int missonID,string missonName,string missonExplan)
     {
         _missonID = missonID;
         _missonName = missonName;
         _missonExplan = missonExplan;
-        _missonDepth = missonDepth;
     }
 
     /// <summary>

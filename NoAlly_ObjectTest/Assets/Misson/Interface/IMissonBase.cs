@@ -17,8 +17,4 @@ public interface IMissonBase
     /// ミッション説明
     /// </summary>
     public string MissonExplan { get; }
-    /// <summary>
-    /// ミッションを解放する攻略深度
-    /// </summary>
-    public int MissonDepth { get; }
 }

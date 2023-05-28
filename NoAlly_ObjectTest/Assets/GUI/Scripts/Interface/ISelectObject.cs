@@ -19,13 +19,13 @@ public interface ISelectObject
     /// <summary>
     /// ボタンのイベントを実行する
     /// </summary>
-    public void DoEvent();
+    public void DoEvent(bool isDoEvent);
     /// <summary>
     /// メニュー展開時実行関数
     /// </summary>
-    public void Extended();
+    public void MenuExtended();
     /// <summary>
     /// メニュー収納実行関数
     /// </summary>
-    public void Closed();
+    public void MenuClosed();
 }

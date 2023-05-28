@@ -1,6 +1,6 @@
-using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// 子オブジェクトのボタンの処理を管理するクラス
@@ -10,6 +10,8 @@ public class Equipment : SelectObjecArrayBase
 {
     [SerializeField]
     CommandType _commandType = CommandType.NONE;
+    [SerializeField]
+    Image _weaponImage;
 
 
     [Tooltip("装備中の武器と属性")]
@@ -22,6 +24,11 @@ public class Equipment : SelectObjecArrayBase
     public IReadOnlyReactiveProperty<WeaponType> SubWeapon => _subWeapon;
     public IReadOnlyReactiveProperty<ElementType> Element => _elementType;
 
+    
+
+    /// <summary>
+    /// 子オブジェクトのボタンイベントをそれぞれ設定する
+    /// </summary>
     protected override void SetButtonEvent()
     {
         for (int y = 0; y < _childlenArray.Length; y++)
@@ -29,29 +36,31 @@ public class Equipment : SelectObjecArrayBase
             for (int x = 0; x < _childlenArray[y].ChildArrays.Length; x++)
             {
                 int index = x;
+                WeaponSelect weaponSelect = _childlenArray[y].ChildArrays[x] as WeaponSelect;
                 switch (_commandType)
                 {
                     case CommandType.MAINWEAPON:
-                        _childlenArray[y].ChildArrays[x].Event.onClick.AddListener(() => EquipmentWeapon(CommandType.MAINWEAPON, (WeaponType)index));
+                        weaponSelect.Event.onClick.AddListener(() => EquipmentWeapon(weaponSelect,CommandType.MAINWEAPON, (WeaponType)index));
                         break;
                     case CommandType.SUBWEAPON:
-                        _childlenArray[y].ChildArrays[x].Event.onClick.AddListener(() => EquipmentWeapon(CommandType.SUBWEAPON, (WeaponType)index));
+                        weaponSelect.Event.onClick.AddListener(() => EquipmentWeapon(weaponSelect,CommandType.SUBWEAPON, (WeaponType)index));
                         break;
                     case CommandType.ELEMENT:
-                        _childlenArray[y].ChildArrays[x].Event.onClick.AddListener(() => EquipmentElement((ElementType)index));
+                        weaponSelect.Event.onClick.AddListener(() => EquipmentElement(weaponSelect,(ElementType)index));
                         break;
                     default:
                         break;
                 }
             }
         }
-
     }
+
+    
 
     /// <summary> 装備武器を切り替える</summary>
     /// <param name="weaponName"></param>
     /// <param name="type"></param>
-    public void EquipmentWeapon(CommandType type, WeaponType weaponName)
+    public void EquipmentWeapon(WeaponSelect weaponSelect, CommandType type, WeaponType weaponName)
     {
         WeaponType beforeWeapons = default;
         if (type == CommandType.MAINWEAPON)
@@ -72,20 +81,20 @@ public class Equipment : SelectObjecArrayBase
                 _isEquipment.Item1 = beforeWeapons;
             }
         }
-        //_switchImage.material = _
+        _weaponImage.sprite = weaponSelect.SwitchImage;
     }
     /// <summary>
     /// 属性を切り替える
     /// </summary>
     /// <param name="element"></param>
-    public void EquipmentElement(ElementType element)
+    public void EquipmentElement(WeaponSelect weaponSelect, ElementType element)
     {
         _isEquipment.Item3 = element;
+        _weaponImage.sprite = weaponSelect.SwitchImage;
     }
-
-    public override void Closed()
+    public override void MenuClosed()
     {
-        base.Closed();
+        base.MenuClosed();
         switch (_commandType)
         {
             case CommandType.MAINWEAPON:
