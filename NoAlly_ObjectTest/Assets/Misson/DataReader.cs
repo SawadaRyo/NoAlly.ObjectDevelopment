@@ -22,15 +22,15 @@ public class SheetData
 /// </summary>
 public class DataReader : MonoBehaviour
 {
-
     [SerializeField] string _gssID = "1cgSvD5aqdSlMYCYJ0MoecTIybA_ZRWfOPZ98ppZJ0h4/edit#gid=0"; //グーグルスプレッドシートにアクセスするためのID
 
-    [SerializeField,Header("スプレッドシートを読み込み後にコールバックする関数")] 
+    [SerializeField, Header("スプレッドシートを読み込み後にコールバックする関数")]
     UnityEvent _onLoadEnd;　　　// この変数にインスペクターからメソッドを登録しておくと、スプレッドシートを読み込み後にコールバックする
 
-    [SerializeField,Header("読み込みたいシート名を選択")]
+    [SerializeField, Header("読み込みたいシート名を選択")]
     SheetData[] _sheetDatas;
 
+    public SheetData[] Sheet => _sheetDatas;
     public async UniTask Reload() => await GetFromWebAsync();
 
     public async UniTask GetFromWebAsync()
@@ -46,18 +46,14 @@ public class DataReader : MonoBehaviour
 
             // シート名だけ毎回読み込み先を変更する
             string url = "https://docs.google.com/spreadsheets/d/" + _gssID + "/gviz/tq?tqx=out:csv&sheet=" + _sheetDatas[i].SheetName.ToString();
-
+            //Debug.Log(url);
             // Web の GoogleSpreadSheet を取得
             UnityWebRequest request = UnityWebRequest.Get(url);
-
-            // 取得できるまで待機
-            //yield return request.SendWebRequest();　　　//　<=　☆③　処理を書き換えますのでコメントします
-
 
             // 非同期処理の処理に加えて CancellationToken の設定を行い、非同期処理をキャンセルした場合には処理が停止するようにセットする
             await request.SendWebRequest().WithCancellation(token);　　//　<=　☆③　処理を書き換えます
 
-            Debug.Log(request.downloadHandler.text);
+            //Debug.Log(request.downloadHandler.text);
 
             // エラーが発生しているか確認
             bool protocol_error = request.result == UnityWebRequest.Result.ProtocolError ? true : false;
@@ -72,6 +68,7 @@ public class DataReader : MonoBehaviour
                 return;               //　<=　☆④  処理を書き換えます
             }
             // GSS の各シートごとのデータを List<string[]> の形で取得
+            Debug.Log(request.downloadHandler.text);
             _sheetDatas[i].DatasList = ConvertToArrayListFromCSV(request.downloadHandler.text);
         }
         // GSSLoader のメソッドを登録しておいて実行する
@@ -83,7 +80,7 @@ public class DataReader : MonoBehaviour
     /// </summary>
     /// <param name="text"></param>
     /// <returns></returns>
-    private List<string[]> ConvertToArrayListFromCSV(string text)
+    List<string[]> ConvertToArrayListFromCSV(string text)
     {
         StringReader reader = new StringReader(text);
         reader.ReadLine();  // 1行目はヘッダー情報なので、読み込んで何もしないで読み飛ばす
@@ -92,8 +89,7 @@ public class DataReader : MonoBehaviour
 
         while (reader.Peek() >= 0)
         {  // Peek メソッドを使うと戻り値の値によりファイルの末尾まで達しているか確認できる。末尾になると -1 が戻るので、そうなるまで繰り返す
-            string line = reader.ReadLine();        // 一行ずつ読み込み
-            string[] elements = line.Split(',');    // 行のセルは,で区切られているので、それを分割して１文字ずつの情報が入った配列にする
+            string[] elements = reader.ReadLine().Split(',');  //データの読み込みと分割 
 
             for (int i = 0; i < elements.Length; i++)
             {　　// 1文字ずつ取り出す
