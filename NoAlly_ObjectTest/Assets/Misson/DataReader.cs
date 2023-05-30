@@ -46,9 +46,9 @@ public class DataReader : MonoBehaviour
 
             // シート名だけ毎回読み込み先を変更する
             string url = "https://docs.google.com/spreadsheets/d/" + _gssID + "/gviz/tq?tqx=out:csv&sheet=" + _sheetDatas[i].SheetName.ToString();
-            //Debug.Log(url);
+            Debug.Log(url);
             // Web の GoogleSpreadSheet を取得
-            UnityWebRequest request = UnityWebRequest.Get(url);
+            UnityWebRequest request = UnityWebRequest.Get("https://script.googleusercontent.com/macros/echo?user_content_key=eZd8qj64xdQEhwdKnRxsFWPEptWv0V_7UopZs73_doX5l_S1YNdpmQ_uc1GxpKOFNfHTilZXRFasiuzmAa4HxKaRHhIArbtgm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnNYgiOI-sVU5uCDgGWcftGfVSSt2KKrLYFNlYfUJJy1HfJReQy1ZqrryuR7bYuv6629Oq-nIc_5UPtz3rmbcAkVFmNp2exz8OQ&lib=MfTJfxUnn6Elzklcl7ja6dfmVBeyHE92y");
 
             // 非同期処理の処理に加えて CancellationToken の設定を行い、非同期処理をキャンセルした場合には処理が停止するようにセットする
             await request.SendWebRequest().WithCancellation(token);　　//　<=　☆③　処理を書き換えます

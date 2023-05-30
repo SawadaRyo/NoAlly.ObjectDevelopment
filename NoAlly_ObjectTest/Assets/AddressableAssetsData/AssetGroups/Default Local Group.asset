@@ -16,7 +16,11 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: e4976ef64359a0f40b89785b60c9ed4d
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 5b60cc5b4f1defb4eaa6c7e90d0e117c
+    m_Address: Assets/Misson/MissonCSV
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: abcf31b64cb47fd45bc995af72788201, type: 2}
   m_SchemaSet:
