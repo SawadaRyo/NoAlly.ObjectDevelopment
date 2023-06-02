@@ -5,8 +5,6 @@ using System.Text;
 
 public class GSSChangeToCSV
 {
-
-
     public void CreateCSV(string dataPath, string[] datas)
     {
         try
