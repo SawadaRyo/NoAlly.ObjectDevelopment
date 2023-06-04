@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data;
 using System.Text;
+using static Network.WebRequest;
 
 namespace MD
 {
@@ -82,10 +83,10 @@ namespace MD
             //マスタ読み込み
             Debug.Log("MasterData Load Start.");
             //NOTE: そもそもコードで参照するのであればべた書きもあり
-            //LoadMasterData<TextMaster>("JP_Text");
-            //LoadMasterData<TextMaster>("EN_Text");
+            LoadMasterData<TextMaster>("JP_Text");
+            LoadMasterData<TextMaster>("EN_Text");
             LoadMasterData<CardMaster>("Card");
-            //LoadMasterData<EffectMaster>("Effect");
+            LoadMasterData<EffectMaster>("Effect");
             MasterDataCheck();
         }
 
@@ -140,9 +141,8 @@ namespace MD
             if (data == null || !_useCache)
             {
                 _loadingCount++;
-                Network.WebRequest.GetRequest(string.Format("{0}?sheet={1}", URI, sheetName), (byte[] data) =>
+                GetRequest(string.Format("{0}?sheet={1}", URI, sheetName), (string json) =>
                 {
-                    string json = Encoding.UTF8.GetString(data);
                     Debug.Log(json);
                     T dt = JsonUtility.FromJson<T>(json);
 

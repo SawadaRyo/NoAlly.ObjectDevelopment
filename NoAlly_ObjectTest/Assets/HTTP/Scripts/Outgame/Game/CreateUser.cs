@@ -29,7 +29,7 @@ namespace Outgame
             {
                 User.Create(data.udid);
 
-                //UnityEngine.SceneManagement.SceneManager.LoadScene((int)SCENEID.Field);
+                UnityEngine.SceneManagement.SceneManager.LoadScene((int)SCENEID.Field);
             });
         }
     }
