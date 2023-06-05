@@ -1,8 +1,8 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class EliminateEnemy : MissonBase
 {
-    [SerializeField,Tooltip("“G‚Ì‘”")]
+    [SerializeField,Tooltip("æ•µã®ç·æ•°")]
     int targetEnemyCount = 0;
 
     public EliminateEnemy(int missonID, string missonName, string missonExplan)

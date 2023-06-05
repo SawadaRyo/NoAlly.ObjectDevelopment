@@ -1,20 +1,20 @@
-
+ï»¿
 public interface IMissonBase
 {
     /// <summary>
-    /// ƒ~ƒbƒVƒ‡ƒ“‚ÌƒNƒŠƒA”»’è
+    /// ãƒŸãƒƒã‚·ãƒ§ãƒ³ã®ã‚¯ãƒªã‚¢åˆ¤å®š
     /// </summary>
     public bool MissonClear { get; }
     /// <summary>
-    /// ƒ~ƒbƒVƒ‡ƒ“ID
+    /// ãƒŸãƒƒã‚·ãƒ§ãƒ³ID
     /// </summary>
     public int MissonID { get; }
     /// <summary>
-    /// ƒ~ƒbƒVƒ‡ƒ“–¼
+    /// ãƒŸãƒƒã‚·ãƒ§ãƒ³å
     /// </summary>
     public string MissonName { get; }
     /// <summary>
-    /// ƒ~ƒbƒVƒ‡ƒ“à–¾
+    /// ãƒŸãƒƒã‚·ãƒ§ãƒ³èª¬æ˜
     /// </summary>
     public string MissonExplan { get; }
 }

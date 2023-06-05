@@ -1,27 +1,27 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 
 public interface IMissonManager
 {
     /// <summary>
-    /// ƒ~ƒbƒVƒ‡ƒ“ƒŠƒXƒg
+    /// ãƒŸãƒƒã‚·ãƒ§ãƒ³ãƒªã‚¹ãƒˆ
     /// </summary>
     public List<IMissonBase> MissonBases { get; }
     /// <summary>
-    /// ƒ~ƒbƒVƒ‡ƒ“ŠJn‚ÉŒÄ‚ÔŠÖ”
+    /// ãƒŸãƒƒã‚·ãƒ§ãƒ³é–‹å§‹æ™‚ã«å‘¼ã¶é–¢æ•°
     /// </summary>
     public void MissonStart();
     /// <summary>
-    /// ƒ~ƒbƒVƒ‡ƒ“ƒNƒŠƒA‚ÉŒÄ‚ÔŠÖ”
+    /// ãƒŸãƒƒã‚·ãƒ§ãƒ³ã‚¯ãƒªã‚¢æ™‚ã«å‘¼ã¶é–¢æ•°
     /// </summary>
     public void MissonClear();
     /// <summary>
-    /// ƒ~ƒbƒVƒ‡ƒ“‚ğó’‚·‚éŠÖ”
+    /// ãƒŸãƒƒã‚·ãƒ§ãƒ³ã‚’å—æ³¨ã™ã‚‹é–¢æ•°
     /// </summary>
-    /// <param name="misson">’Ç‰Á‚·‚éƒ~ƒbƒVƒ‡ƒ“ </param>
+    /// <param name="misson">è¿½åŠ ã™ã‚‹ãƒŸãƒƒã‚·ãƒ§ãƒ³ </param>
     public void AddMisson(IMissonBase misson);
     /// <summary>
-    /// ƒ~ƒbƒVƒ‡ƒ“‚ğ”jŠü‚·‚éŠÖ”
+    /// ãƒŸãƒƒã‚·ãƒ§ãƒ³ã‚’ç ´æ£„ã™ã‚‹é–¢æ•°
     /// </summary>
-    /// <param name="misson">”jŠü‚·‚éƒ~ƒbƒVƒ‡ƒ“</param>
+    /// <param name="misson">ç ´æ£„ã™ã‚‹ãƒŸãƒƒã‚·ãƒ§ãƒ³</param>
     public void RemoveMisson(IMissonBase misson);
 }
