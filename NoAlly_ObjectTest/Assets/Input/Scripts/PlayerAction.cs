@@ -17,7 +17,7 @@ public class PlayerAction
             {
 
             }
-        }).AddTo(inputController);
+        }).AddTo(inputController.gameObject);
     }
     public void Attack(Animator animator, WeaponType weaponType,PlayerActionState playerActionState)
     {

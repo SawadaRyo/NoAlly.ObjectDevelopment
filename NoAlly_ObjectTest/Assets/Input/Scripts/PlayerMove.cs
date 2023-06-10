@@ -19,11 +19,9 @@ public class PlayerMove
             }
         }).AddTo(inputController.gameObject);
     }
-    public void Move(float x,float y,float speed,Rigidbody rb)
+    public void Move(float x, float y, float speed, Rigidbody rb)
     {
         var moveVec = x * speed;
         rb.velocity = new Vector3(moveVec, rb.velocity.y, 0f);
     }
-
-    
 }
