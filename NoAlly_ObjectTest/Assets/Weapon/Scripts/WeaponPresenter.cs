@@ -23,6 +23,8 @@ public class WeaponPresenter : MonoBehaviour
 
     WeaponType _cullentWeaponType;
 
+    public WeaponType CullentWeaponType => _cullentWeaponType;
+
     void Awake()
     {
         for (int i = 0; i < _weaponEquipment.Length; i++)

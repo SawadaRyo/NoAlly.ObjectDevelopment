@@ -15,6 +15,7 @@ public enum PlayerActionState
     Attack,
     Attacking,
     Charging,
+    ChargingAttack,
 
     Damaged,
     Damaging
@@ -31,12 +32,14 @@ public enum PlayerStateFlag
 public class InputController : MonoBehaviour
 {
     [SerializeField]
-    float _speed = 5f;
+    PlayerInputParamater _inputParamater = null;
     [SerializeField]
     Rigidbody _rb = null;
     [SerializeField]
     Animator _animator = null;
 
+
+    float _chargeTime = 0f;
     [Tooltip("")]
     PlayerMove _playerMove = null;
     [Tooltip("")]
@@ -47,6 +50,8 @@ public class InputController : MonoBehaviour
     PlayerActionState _attackState = PlayerActionState.None;
 
     public ObservableStateMachineTrigger Trigger => _trigger;
+    public PlayerActionState AttackState => _attackState;
+
     void Start()
     {
         _playerMove = new(this);
@@ -61,9 +66,13 @@ public class InputController : MonoBehaviour
     void UpdateToInput()
     {
         Vector2 moveVec = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vartical"));
-        if(IsMoveJudge(moveVec) != PlayerActionState.None)
+        if (IsMoveJudge(moveVec) != PlayerActionState.None)
         {
-            _playerMove.Move(moveVec.x, moveVec.y, _speed, _rb);
+            _playerMove.Move(moveVec.x, moveVec.y, _inputParamater.speed, _rb);
+        }
+        if (_attackState != PlayerActionState.None)
+        {
+            _playerAction.Attack(_animator,, _attackState);
         }
     }
 
@@ -73,27 +82,42 @@ public class InputController : MonoBehaviour
         {
             return PlayerActionState.Move;
         }
-        else if(moveVec.y > 0)
+        else if (moveVec.y > 0)
         {
             return PlayerActionState.Upper;
         }
-        else if(moveVec.y < 0)
+        else if (moveVec.y < 0)
         {
             return PlayerActionState.Down;
         }
         return PlayerActionState.None;
     }
 
-    void  ActionFlag()
+    void ActionFlag()
     {
         if (Input.GetButtonDown("Attack"))
         {
             _attackState = PlayerActionState.Attack;
         }
-        else if(Input.GetButton("Attack"))
+        else if (Input.GetButton("Attack"))
         {
-            _attackState = PlayerActionState.Charging;
+            if (_chargeTime < _inputParamater.chargeInterval)
+            {
+                _chargeTime += Time.deltaTime;
+            }
+            if (_chargeTime >= _inputParamater.chargeInterval)
+            {
+                _attackState = PlayerActionState.Charging;
+            }
         }
-        _attackState = PlayerActionState.None;
+        else if (Input.GetButtonUp("Attack"))
+        {
+            _chargeTime = 0f;
+            _attackState = PlayerActionState.ChargingAttack;
+        }
+        else
+        {
+            _attackState = PlayerActionState.None;
+        }
     }
 }
