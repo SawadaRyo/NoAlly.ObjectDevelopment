@@ -2,11 +2,16 @@
 using System;
 using UnityEngine;
 using UniRx;
-using UniRx.Triggers;
 
 public class PlayerAction
 {
+    [Tooltip("攻撃可能判定")]
     bool _ableAttack = true;
+    [Tooltip("移動可能判定")]
+    bool _ableMove = true;
+
+    public bool ableMove => _ableMove;
+
 
     public PlayerAction(InputController inputController)
     {
@@ -15,20 +20,25 @@ public class PlayerAction
         InputExit(inputController);
     }
 
-    public void Attack(Animator animator, WeaponType weaponType,PlayerActionState attackState)
+    public void Attack(Animator animator, WeaponType weaponType, PlayerActionState attackState)
     {
-        if (!_ableAttack) return;
-
         switch (attackState)
         {
             case PlayerActionState.Attack:
-                Debug.Log(attackState);
+                if (!_ableAttack)
+                {
+                    Debug.Log("攻撃不能");
+                    return;
+                }
+                Debug.Log("攻撃");
                 animator.SetTrigger(weaponType.ToString());
                 break;
             case PlayerActionState.Charging:
+                Debug.Log("チャージ中");
                 animator.SetBool("Charging", true);
                 break;
             case PlayerActionState.ChargingAttack:
+                Debug.Log("溜め攻撃");
                 animator.SetBool("Charging", false);
                 break;
             default:
@@ -50,6 +60,10 @@ public class PlayerAction
             else if (info.IsTag("ChargeAttack"))
             {
 
+            }
+            else if (info.IsTag("FinishAttack"))
+            {
+                _ableAttack = false;
             }
         }).AddTo(inputController.gameObject);
     }
@@ -85,6 +99,11 @@ public class PlayerAction
             {
 
             }
+            else if (info.IsTag("FinishAttack"))
+            {
+                _ableAttack = true;
+            }
         }).AddTo(inputController.gameObject);
     }
+
 }
