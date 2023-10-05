@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5221f9e3b5033b34094c4471280cf0bb, type: 3}
+  m_Name: EnemyParamater
+  m_EditorClassIdentifier: 
+  searchRenge: 0
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  hp: 5
+  enemyPowers:
+  - defaultPower: 0
+    elementPower: 0
+    elementType: 0
+  - defaultPower: 0
+    elementPower: 0
+    elementType: 0
+  - defaultPower: 0
+    elementPower: 0
+    elementType: 0
+  - defaultPower: 0
+    elementPower: 0
+    elementType: 0
+  speed: 3
