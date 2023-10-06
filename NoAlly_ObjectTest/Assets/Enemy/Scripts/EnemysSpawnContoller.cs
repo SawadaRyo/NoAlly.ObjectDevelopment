@@ -14,7 +14,6 @@ public class EnemysSpawnContoller : MonoBehaviour,IObjectGenerator
         {
             enemy.DisactiveForInstantiate(this);
             enemy.GetComponent<StatusBase>().Initialize();
-            enemy.Create();
         }
     }
 

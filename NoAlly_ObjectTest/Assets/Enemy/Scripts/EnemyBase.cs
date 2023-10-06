@@ -7,8 +7,8 @@ public class EnemyBase : ObjectBase, IObjectPool<IObjectGenerator>
     [SerializeField, Header("エネミーの基本データ")]
     protected EnemyParamaterBase _enemyParamater = null;
     [SerializeField, Header("索敵範囲の中心")]
-    protected Transform _center = default;
-    [SerializeField,Header("エネミーのRigidbody")]
+    protected Transform _center = null;
+    [SerializeField, Header("エネミーのRigidbody")]
     protected Rigidbody _rb = null;
 
     [Tooltip("ステートマシン")]
@@ -17,9 +17,10 @@ public class EnemyBase : ObjectBase, IObjectPool<IObjectGenerator>
     protected IObjectGenerator _owner = null;
     [Tooltip("プレイヤーのステータスクラス")]
     ReactiveProperty<StatusBase> _playerStatus = null;
-    [Tooltip("エネミーの攻撃方法を保存するクラス\r\n 基本的にアニメーションイベントから内部を変更する")]
-    ReactiveProperty<EnemyAttackEnum> _attackEnum = null;
+    [Tooltip("エネミーの攻撃方法を保存する\r\n 基本的にアニメーションイベントから内部を変更する。使用するのは先頭の番号が「4」から始まる列挙")]
+    ReactiveProperty<StateOfEnemy> _attackEnum = null;
 
+    public EnemyParamaterBase Paramater => _enemyParamater;
     /// <summary>
     /// ステートマシーンのオーナー(自分)を返すプロパティ(読み取り専用)
     /// </summary>
@@ -31,13 +32,17 @@ public class EnemyBase : ObjectBase, IObjectPool<IObjectGenerator>
     /// <summary>
     /// エネミーの攻撃状況(読み取り専用)
     /// </summary>
-    public IReadOnlyReactiveProperty<EnemyAttackEnum> EnemyAttackEnum => _attackEnum;
+    public IReadOnlyReactiveProperty<StateOfEnemy> EnemyAttackEnum => _attackEnum;
     /// <summary>
     /// このオブジェクトの生成主(読み取り専用)
     /// </summary>
     public IObjectGenerator Owner => _owner;
 
-    public EnemyAttackEnum AttackEnum(EnemyAttackEnum attackEnum) => _attackEnum.Value = attackEnum;
+    public void AttackEnum(StateOfEnemy attackEnum)
+    {
+        _attackEnum.SetValueAndForceNotify(attackEnum);
+    }
+
     /// <summary>
     /// 索敵範囲内にプレイヤーが存在するかを判定する処理
     /// </summary>
@@ -60,14 +65,7 @@ public class EnemyBase : ObjectBase, IObjectPool<IObjectGenerator>
     void OnUpdate()
     {
         Observable.EveryFixedUpdate()
-            .Where(_ =>
-            {
-                if(_stateMachine != null && _isActive)
-                {
-                    return true;
-                }
-                return false;
-            })
+            .Where(_ => (_stateMachine != null && _isActive))
             .Subscribe(_ =>
             {
                 _playerStatus.Value = InSight();
@@ -77,18 +75,14 @@ public class EnemyBase : ObjectBase, IObjectPool<IObjectGenerator>
     /// <summary>
     /// エネミーのステート設定処理
     /// </summary>
-    protected virtual void SetActionState() 
+    protected virtual void SetActionState()
     {
-        //戦闘態勢
-        //_stateMachine.AddTransition<EnemySearch, EnemyBattlePosture>((int)StateOfEnemy.BattlePosture);
         //戦闘態勢解除
-        //_stateMachine.AddTransition<EnemyBattlePosture, EnemySearch>((int)StateOfEnemy.Saerching);
-        //プレイヤーへの攻撃
-        //_stateMachine.AddTransition<EnemyBattlePosture, EnemyAttack>((int)StateOfEnemy.Attack);
+        _stateMachine.AddTransition<EnemyBattlePosture, EnemySearch>((int)StateOfEnemy.Saerching);
+        //戦闘態勢
+        _stateMachine.AddTransition<EnemySearch, EnemyBattlePosture>((int)StateOfEnemy.BattlePosture);
         //死亡
-        //_stateMachine.AddAnyTransition<EnemyDeath>((int)StateOfEnemy.Death);
-        //ステート開始
-        //_stateMachine.Start<EnemySearch>();
+        _stateMachine.AddAnyTransition<EnemyDeath>((int)StateOfEnemy.Death);
     }
     /// <summary>
     /// オブジェクト有効時に呼ぶ関数
@@ -118,18 +112,27 @@ public class EnemyBase : ObjectBase, IObjectPool<IObjectGenerator>
     /// </summary>
     /// <typeparam name="TOwner"></typeparam>
     /// <param name="owner"></param>
-    public virtual void DisactiveForInstantiate(IObjectGenerator owner = null)
+    public virtual void DisactiveForInstantiate(IObjectGenerator owner = null, bool isActive = false)
     {
-        if(owner != null)
+        if (owner != null)
         {
             _owner = owner;
         }
         _playerStatus = new();
-        _attackEnum = new();
+        _attackEnum = new(StateOfEnemy.None);
         _stateMachine = new StateMachine<EnemyBase>(this);
         SetActionState();
+        //ステート開始
+        _stateMachine.Start<EnemySearch>();
         OnUpdate();
-        _isActive = false;
+        if (isActive)
+        {
+            Create();
+        }
+        else
+        {
+            Disactive();
+        }
     }
     /// <summary>
     /// オブジェクトを破棄する際に呼ばれる関数

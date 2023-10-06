@@ -11,10 +11,17 @@ public class EnemySearch : State
     float _turnDuration = 0.5f;
     protected virtual void SearchBehaviour() { }
 
+    protected override void OnEnter(State prevState)
+    {
+        base.OnEnter(prevState);
+        Owner.ObjectAnimator.SetBool("InSight", false);
+    }
+
     protected override void OnUpdate()
     {
         base.OnUpdate();
         SearchBehaviour();
+        EnemyRotate();
     }
 
     protected void EnemyRotate()
@@ -25,25 +32,24 @@ public class EnemySearch : State
             _isRotatedLeft = !_isRotatedLeft;
             if (_isRotatedLeft)
             {
-                Owner.transform.DORotate(new Vector3(0f, -90f, 0f), _turnDuration);
+                Owner.transform.DORotate(new Vector3(0f, 0, 0f), _turnDuration);
             }
             else
             {
-                Owner.transform.DORotate(new Vector3(0f, 90f, 0f), _turnDuration);
+                Owner.transform.DORotate(new Vector3(0f, 180f, 0f), _turnDuration);
             }
             _time = 0;
         }
     }
 
-    protected override void OnTranstion()
+    protected override void OnSetUpState()
     {
-        base.OnTranstion();
+        base.OnSetUpState();
         Owner.Player
             .Where(player => player != null && IsActive)
             .Subscribe(player =>
             {
                 Owner.EnemyStateMachine.Dispatch((int)StateOfEnemy.BattlePosture);
-                Owner.ObjectAnimator.SetBool("InSight", true);
             }).AddTo(Owner);
     }
 }
