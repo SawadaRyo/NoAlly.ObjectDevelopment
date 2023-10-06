@@ -12,22 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5221f9e3b5033b34094c4471280cf0bb, type: 3}
   m_Name: EnemyParamater
   m_EditorClassIdentifier: 
-  searchRenge: 0
+  searchRenge: 5
   targetLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   hp: 5
   enemyPowers:
-  - defaultPower: 0
-    elementPower: 0
+  - defencePower: 1
     elementType: 0
-  - defaultPower: 0
-    elementPower: 0
-    elementType: 0
-  - defaultPower: 0
-    elementPower: 0
-    elementType: 0
-  - defaultPower: 0
-    elementPower: 0
-    elementType: 0
+  - defencePower: 1
+    elementType: 1
+  - defencePower: 1
+    elementType: 2
+  - defencePower: 1
+    elementType: 3
   speed: 3
+  _attackInterval: 1
