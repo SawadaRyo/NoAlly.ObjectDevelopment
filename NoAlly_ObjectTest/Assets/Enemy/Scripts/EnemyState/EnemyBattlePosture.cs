@@ -9,14 +9,7 @@ public class EnemyBattlePosture : State
     protected override void OnEnter(State prevState)
     {
         base.OnEnter(prevState);
-        if (Owner.Player.Value == null)
-        {
-            Owner.EnemyStateMachine.Dispatch((int)StateOfEnemy.Saerching);
-        }
-        else
-        {
-            Owner.ObjectAnimator.SetBool("InSight", true);
-        }
+        Owner.ObjectAnimator.SetBool("InSight", true);
     }
 
     protected override void OnUpdate()
@@ -26,6 +19,11 @@ public class EnemyBattlePosture : State
         {
             Owner.EnemyStateMachine.Dispatch((int)StateOfEnemy.NormalAttack);
             Debug.Log("攻撃だよ！");
+        }
+        if (Owner.Player.Value == null)
+        {
+            Debug.Log("攻撃中止");
+            Owner.EnemyStateMachine.Dispatch((int)StateOfEnemy.Saerching);
         }
     }
 
@@ -43,6 +41,7 @@ public class EnemyBattlePosture : State
             .Where(player => player == null && IsActive)
             .Subscribe(player =>
             {
+                Debug.Log("攻撃中止2");
                 Owner.EnemyStateMachine.Dispatch((int)StateOfEnemy.Saerching);
             }).AddTo(Owner);
     }

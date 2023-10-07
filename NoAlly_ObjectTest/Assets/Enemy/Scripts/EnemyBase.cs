@@ -38,11 +38,12 @@ public class EnemyBase : ObjectBase, IObjectPool<IObjectGenerator>
     /// </summary>
     public IObjectGenerator Owner => _owner;
 
-    public void AttackEnum(StateOfEnemy attackEnum)
-    {
-        _attackEnum.SetValueAndForceNotify(attackEnum);
-    }
+    public void AttackEnum(StateOfEnemy attackEnum) => _attackEnum.SetValueAndForceNotify(attackEnum);
 
+    /// <summary>
+    /// エネミーのステート設定処理
+    /// </summary>
+    protected virtual void SetActionState() { }
     /// <summary>
     /// 索敵範囲内にプレイヤーが存在するかを判定する処理
     /// </summary>
@@ -71,18 +72,6 @@ public class EnemyBase : ObjectBase, IObjectPool<IObjectGenerator>
                 _playerStatus.Value = InSight();
                 _stateMachine.Update();
             }).AddTo(this);
-    }
-    /// <summary>
-    /// エネミーのステート設定処理
-    /// </summary>
-    protected virtual void SetActionState()
-    {
-        //戦闘態勢解除
-        _stateMachine.AddTransition<EnemyBattlePosture, EnemySearch>((int)StateOfEnemy.Saerching);
-        //戦闘態勢
-        _stateMachine.AddTransition<EnemySearch, EnemyBattlePosture>((int)StateOfEnemy.BattlePosture);
-        //死亡
-        _stateMachine.AddAnyTransition<EnemyDeath>((int)StateOfEnemy.Death);
     }
     /// <summary>
     /// オブジェクト有効時に呼ぶ関数
