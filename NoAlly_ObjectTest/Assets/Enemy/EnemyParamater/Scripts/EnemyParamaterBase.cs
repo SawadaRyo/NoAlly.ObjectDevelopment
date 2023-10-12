@@ -14,7 +14,12 @@ public class EnemyParamaterBase : ScriptableObject
     [SerializeField, Header("エネミーの体力")]
     public float hp = 5f;
     [SerializeField, Header("エネミーの攻撃力")]
-    public ObjectPowerValue[] enemyPowers = new ObjectPowerValue[4];
+    public ObjectDefenceValue[] enemyPowers = new ObjectDefenceValue[4];
+
+    [Space(15)]
+
     [SerializeField, Header("エネミーの移動速度")]
     public float speed = 3f;
+    [SerializeField, Range(1f, 5f), Header("エネミーの攻撃速度")]
+    public float _attackInterval = 1f;
 }

@@ -5,11 +5,13 @@ using State = StateMachine<EnemyBase>.State;
 
 public class EnemySearch : State
 {
-    bool _isRotatedLeft;
-    float _time = 0;
-    float _intervalRotate = 3;
-    float _turnDuration = 0.5f;
     protected virtual void SearchBehaviour() { }
+
+    protected override void OnEnter(State prevState)
+    {
+        base.OnEnter(prevState);
+        Owner.ObjectAnimator.SetBool("InSight", false);
+    }
 
     protected override void OnUpdate()
     {
@@ -17,27 +19,9 @@ public class EnemySearch : State
         SearchBehaviour();
     }
 
-    protected void EnemyRotate()
+    protected override void OnSetUpState()
     {
-        _time += Time.deltaTime;
-        if (_time >= _intervalRotate)
-        {
-            _isRotatedLeft = !_isRotatedLeft;
-            if (_isRotatedLeft)
-            {
-                Owner.transform.DORotate(new Vector3(0f, -90f, 0f), _turnDuration);
-            }
-            else
-            {
-                Owner.transform.DORotate(new Vector3(0f, 90f, 0f), _turnDuration);
-            }
-            _time = 0;
-        }
-    }
-
-    protected override void OnTranstion()
-    {
-        base.OnTranstion();
+        base.OnSetUpState();
         Owner.Player
             .Where(player => player != null && IsActive)
             .Subscribe(player =>

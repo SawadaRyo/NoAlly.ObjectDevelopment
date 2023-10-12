@@ -1,40 +1,52 @@
 //日本語コメント可
 using UniRx;
+using UnityEngine;
 using State = StateMachine<EnemyBase>.State;
 
 public class EnemyBattlePosture : State
 {
-    /// <summary>
-    /// 攻撃のアニメーションを再生する　例：エネミーの弾を撃つアニメーションを再生する
-    /// </summary>
-    protected virtual void PlayAttackAnimation() { }
-    /// <summary>
-    /// 攻撃の挙動を処理する　例：エネミーが弾を生成し発射する処理を実行する
-    /// </summary>
-    protected virtual void AttackBehaviour(EnemyAttackEnum attackEnum) { }
+    Interval currentInterval = null;
+
+    protected virtual void OnBattlePosture() { }
+
+    protected override void OnLateEntar(State prevState)
+    {
+        base.OnEnter(prevState);
+        if (Owner.Player.Value == null)
+        {
+            Debug.Log("攻撃中止");
+            Owner.EnemyStateMachine.Dispatch((int)StateOfEnemy.Saerching);
+        }
+    }
 
     protected override void OnUpdate()
     {
         base.OnUpdate();
-        PlayAttackAnimation();
+        OnBattlePosture();
+        if (currentInterval.IsCountUp())
+        {
+            Owner.EnemyStateMachine.Dispatch((int)StateOfEnemy.NormalAttack);
+            Debug.Log("攻撃だよ！");
+        }
     }
 
-    protected override void OnTranstion()
+    protected override void OnExit(State nextState)
     {
+        base.OnExit(nextState);
+        currentInterval.ResetTimer();
+    }
+
+    protected override void OnSetUpState()
+    {
+        currentInterval = new(Owner.Paramater<EnemyParamaterBase>()._attackInterval);
         Owner.Player
-            .Where(_ => IsActive == true)
+            .Skip(1)
+            .Where(player => player == null && IsActive)
             .Subscribe(player =>
             {
-                if (player == null)
-                {
-                    Owner.EnemyStateMachine.Dispatch((int)StateOfEnemy.Saerching);
-                    Owner.ObjectAnimator.SetBool("InSight", false);
-                }
-            }).AddTo(Owner);
-        Owner.EnemyAttackEnum
-            .Subscribe(attack =>
-            {
-
+                Debug.Log("攻撃中止2");
+                Owner.EnemyStateMachine.Dispatch((int)StateOfEnemy.Saerching);
+                Owner.ObjectAnimator.SetBool("InSight", false);
             }).AddTo(Owner);
     }
 }
