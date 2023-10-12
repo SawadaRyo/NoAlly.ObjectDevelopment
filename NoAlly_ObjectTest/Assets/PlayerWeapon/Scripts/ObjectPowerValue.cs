@@ -3,11 +3,11 @@ using UnityEngine;
 [System.Serializable]
 public struct ObjectPowerValue
 {
-    [Range(0f, 2f),Header("ƒIƒuƒWƒFƒNƒg‚Ì•¨—UŒ‚—Í")]
+    [Range(0f, 2f),Header("ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç‰©ç†æ”»æ’ƒåŠ›")]
     public float defaultPower;
-    [Range(0f, 2f), Header("ƒIƒuƒWƒFƒNƒg‚Ì‘®«UŒ‚—Í")]
+    [Range(0f, 2f), Header("ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å±žæ€§æ”»æ’ƒåŠ›")]
     public float elementPower;
-    [Range(0f, 2f), Header("ƒIƒuƒWƒFƒNƒg‚Ì‘®«")]
+    [Header("ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å±žæ€§")]
     public ElementType elementType;
 
     static readonly ObjectPowerValue zeroPower = new(0, 0, ElementType.RIGIT);
@@ -18,6 +18,25 @@ public struct ObjectPowerValue
     {
         this.defaultPower = defaultPower;
         this.elementPower = elementPower;
+        this.elementType = elementType;
+    }
+}
+
+[System.Serializable]
+public struct ObjectDefenceValue
+{
+    [Range(0f, 2f), Header("ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é˜²å¾¡åŠ›")]
+    public float defencePower;
+    [Header("é˜²å¾¡åŠ›ã®å±žæ€§")]
+    public ElementType elementType;
+
+    static readonly ObjectPowerValue zeroPower = new(0, 0, ElementType.RIGIT);
+
+    public static ObjectPowerValue zero => zeroPower;
+
+    public ObjectDefenceValue(float defencePower, ElementType elementType)
+    {
+        this.defencePower = defencePower;
         this.elementType = elementType;
     }
 }
