@@ -27,6 +27,7 @@ public class EnemySearch : State
             .Subscribe(player =>
             {
                 Owner.EnemyStateMachine.Dispatch((int)StateOfEnemy.BattlePosture);
+                Owner.ObjectAnimator.SetBool("InSight", true);
             }).AddTo(Owner);
     }
 }
