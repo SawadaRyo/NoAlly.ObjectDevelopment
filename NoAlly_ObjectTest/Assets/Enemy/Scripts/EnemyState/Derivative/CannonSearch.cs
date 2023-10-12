@@ -12,6 +12,7 @@ public class CannonSearch : EnemySearch
     protected override void SearchBehaviour()
     {
         base.SearchBehaviour();
+        EnemyRotate();
     }
 
     protected void EnemyRotate()
@@ -22,13 +23,18 @@ public class CannonSearch : EnemySearch
             _isRotatedLeft = !_isRotatedLeft;
             if (_isRotatedLeft)
             {
-                Owner.transform.DORotate(new Vector3(0f, 0, 0f), _turnDuration);
+                Owner.transform.DORotate(Owner.Paramater<CannonEnemyParamater>().rotateLeft, _turnDuration);
             }
             else
             {
-                Owner.transform.DORotate(new Vector3(0f, 180f, 0f), _turnDuration);
+                Owner.transform.DORotate(Owner.Paramater<CannonEnemyParamater>().rotateRight, _turnDuration);
             }
             _time = 0;
         }
+    }
+
+    protected override void OnSetUpState()
+    {
+        base.OnSetUpState();
     }
 }

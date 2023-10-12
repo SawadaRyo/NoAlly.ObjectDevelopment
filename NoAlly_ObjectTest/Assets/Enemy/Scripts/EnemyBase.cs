@@ -20,7 +20,6 @@ public class EnemyBase : ObjectBase, IObjectPool<IObjectGenerator>
     [Tooltip("エネミーの攻撃方法を保存する\r\n 基本的にアニメーションイベントから内部を変更する。使用するのは先頭の番号が「4」から始まる列挙")]
     ReactiveProperty<StateOfEnemy> _attackEnum = null;
 
-    public EnemyParamaterBase Paramater => _enemyParamater;
     /// <summary>
     /// ステートマシーンのオーナー(自分)を返すプロパティ(読み取り専用)
     /// </summary>
@@ -37,6 +36,15 @@ public class EnemyBase : ObjectBase, IObjectPool<IObjectGenerator>
     /// このオブジェクトの生成主(読み取り専用)
     /// </summary>
     public IObjectGenerator Owner => _owner;
+    public T Paramater<T>() where T : EnemyParamaterBase
+    {
+        if(_enemyParamater is not T)
+        {
+            Debug.LogError($"指定したクラスとパラメータースクリプトの型が一致していません。\n指定した型は\r{typeof(T)}\n設定されているパラメーターの型は\r{_enemyParamater.GetType()}\rです");
+            return null;
+        }
+        return (T)_enemyParamater; 
+    }
 
     public void AttackEnum(StateOfEnemy attackEnum) => _attackEnum.SetValueAndForceNotify(attackEnum);
 
