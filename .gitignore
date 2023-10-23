@@ -59,3 +59,5 @@ sysinfo.txt
 crashlytics-build.properties
 
 NoAlly_ObjectTest/Assets/AssetStoreTools/
+NoAlly_ObjectTest/Library/
+NoAlly_ObjectTest/Assets/IgnoreFiles(UnityAssets)/
